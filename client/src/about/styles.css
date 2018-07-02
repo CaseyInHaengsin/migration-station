@@ -1,0 +1,87 @@
+.container{
+    /* display: flex; */
+    /* background: url("../images/bannerBackground3.png") no-repeat bottom center;  */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    color: white;
+    display: flex;
+}
+
+.content{
+    margin-top: 0%;
+    width: 50%;
+    padding-left: 10%;
+    padding-right: 24%;
+    padding-top: 1%;
+    color: #34383D;
+}
+
+.pricesButton {
+    position: relative;
+    color: #F6921E;
+    font-size: 30px;
+    text-decoration: none;
+    padding-top: 5%;
+}
+
+.pricesButton:hover{
+    color: #34383D;
+    transform: scale(1.3);
+}
+
+.quoteLinkAbout{
+    color: #E7BD8C;
+    text-decoration: none;
+    font-size: 35px;
+}
+
+.quoteLinkAbout:hover{
+    color: #9EB9EA;
+}
+
+
+.pulse {
+    -webkit-animation: color_change 1s infinite alternate;
+    -moz-animation: color_change 1s infinite alternate;
+    -ms-animation: color_change 1s infinite alternate;
+    -o-animation: color_change 1s infinite alternate;
+    animation: color_change 1s infinite alternate;
+   }
+   
+   @-webkit-keyframes color_change {
+    from { color: #F6921E; }
+    to { color: #34383D; }
+   }
+   @-moz-keyframes color_change {
+    from { color: #F6921E; }
+    to { color: #34383D; }
+   }
+   @-ms-keyframes color_change {
+    from { color: #F6921E; }
+    to { color: #34383D; }
+   }
+   @-o-keyframes color_change {
+    from { color: #F6921E; }
+    to { color: #34383D; }
+   }
+   @keyframes color_change {
+    from { color: #F6921E; }
+    to { color: #34383D; }
+   }
+
+
+@media only screen and (max-width: 600px) {
+    .content {
+        width: 100%;
+    }
+
+    .container{
+        overflow: none;
+    }
+  }
+
+
+
