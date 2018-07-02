@@ -47,7 +47,7 @@ router.route('/send-message')
                             <br/>
                             
                             <h3>Miles From Store: ${req.body.miles}</h3>
-                            <h3>Container Size: ${req.body.size} Foot Contaienr</h3>
+                            <h3>Container Size: ${req.body.size} Foot Container</h3>
                             
                             <br/><br/>
                             
