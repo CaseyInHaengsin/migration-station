@@ -48,6 +48,7 @@ router.route('/send-message')
         // Only needed if you don't have a real mail account for testing
 
         console.log(req.body)
+        console.log("sending email")
 
         try {
             nodemailer.createTestAccount((err, account) => {
