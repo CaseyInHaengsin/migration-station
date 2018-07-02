@@ -28,13 +28,13 @@ app.use(bodyParser.json());
 // CORS stuff
 var allowedOrigins = [
     'http://localhost:3000',
-    'gilagoat.herokuapp.com',
-    'https://gilagoat.herokuapp.com',
-    'http://gilagoat.herokuapp.com',
-    'http://gilagoat.com',
-    'http://www.gilagoat.com',
-    'https://gilagoat.com',
-    'https://www.gilagoat.com'
+    'boinglebox.herokuapp.com',
+    'https://boinglebox.herokuapp.com',
+    'http://boinglebox.herokuapp.com',
+    'http://boinglebox.com',
+    'http://www.boinglebox.com',
+    'https://boinglebox.com',
+    'https://www.boinglebox.com'
 ];
 app.use(cors({
     origin: function (origin, callback) {
