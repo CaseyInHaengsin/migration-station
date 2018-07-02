@@ -44,6 +44,7 @@ class homeQuote extends Component {
     
 
     handleSubmit = () => {
+
         const info = this.state;
         this.setState({ messageLoading: true }, () => {
           axios.post(`http://localhost:5000/api/send-message`, info)
@@ -94,10 +95,12 @@ class homeQuote extends Component {
                 generated: true,
                 errorMessage: "Scroll Down for Quote Results"
             })
-
-            console.log(currentComponent.state)
-
         });
+
+        setTimeout(() => {
+            this.handleSubmit()
+        }, 6000);
+
       }
 
     
@@ -211,7 +214,7 @@ class homeQuote extends Component {
                     <Row>
 
                         <Col xs={12} md={12}>
-                            <button class='generateQuoteButton' disabled={this.state.disabled} style={quoteButton} onClick={this.handleSubmit} >{this.state.buttonText}</button>
+                            <button class='generateQuoteButton' disabled={this.state.disabled} style={quoteButton} onClick={this.getMapInfo} >{this.state.buttonText}</button>
                         </Col>
                         
                         <Col md={12} style={{marginTop: "4%"}}>
@@ -226,6 +229,7 @@ class homeQuote extends Component {
     results=()=>{
 
         var deliveryCharge = this.state.miles > 20 ? (this.state.miles - 20)*3+75 : 75
+
         return(
             <div style={{maxHeight: "950px", minHeight: "950px"}}>
                     <Grid style={{textAlign: "left", paddingLeft: "10%", marginTop: "5%"}}>
@@ -251,53 +255,7 @@ class homeQuote extends Component {
                             </Col>
                     </Row>
                 </Grid>
-
-                            <form method="POST" action="https://formspree.io/Parkwaystoragecenter@gmail.com">
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-1" name='first Name' value={this.state.firstName}/>
-                                </span>
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-2" name='last Name' value={this.state.lastName}/>
-                                </span>
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-3" name='email'value={this.state.email}/>
-                                </span>
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-4" name='phone Number' value={this.state.phoneNumber}/>
-                                </span>
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-5" name='address' value={this.state.address}/>
-                                </span>
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-6" name='city' value={this.state.city}/>
-                                </span>
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-7" name='state' value={this.state.state}/>
-                                </span>
-
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-8" name='zip Code' value={this.state.zipCode}/>
-                                </span>
-
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-8" name='container Size' value={this.state.size}/>
-                                </span>
-
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-8" name='Distance From Store' value={this.state.miles}/>
-                                </span>
-
-                                <span className="input input--haruki" style={{display: "none"}}>
-                                    <input className="input__field input__field--haruki" type="text" id="input-8" name='Delivery Charge' value={deliveryCharge}/>
-                                </span>
-                                
-                                <input type="hidden" name="_subject" value="New Quote!" />
-                                <input type="text" name="_gotcha" style={{display: "none"}} />
-                                <input type="hidden" name="_next" value="http://www.boinglebox.com/" />
-
-                                <button className='finalizeQuote quoteButtonFix' type='submit'>Finalize Quote</button>
-                        </form>
-                    </div>
+            </div>
         )
     }
 
