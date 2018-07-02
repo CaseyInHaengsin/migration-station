@@ -46,7 +46,7 @@ class homeQuote extends Component {
 
         const info = this.state;
         this.setState({ messageLoading: true }, () => {
-          axios.post(`http://www.boinglebox.com/api/send-message`, info)
+          axios.post(`https://boinglebox.herokuapp.com//api/send-message`, info)
             .then(response => {
               if (response.status === 200) {
                 this.setState({ messageLoading: false, success: "Thank you, your message has been sent." })
