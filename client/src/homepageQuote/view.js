@@ -144,7 +144,7 @@ class homeQuote extends Component {
                     <Row><Col xs={12}><h1 className='title'>Boingle Box</h1></Col></Row>
                     <Row><Col xs={12}><h1 className='subTitle'>Portable Storage Containers</h1></Col></Row>
 
-                    <Row><Col xs={12}><h1 className='quoteHeader'>Get An Instant Quote</h1></Col></Row>
+                    <Row><Col xs={12}><h1   className='quoteHeader'>Get An Instant Quote</h1></Col></Row>
 
                     <Row>
                         <Col xs={6}>
