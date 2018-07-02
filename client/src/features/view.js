@@ -1,6 +1,5 @@
 import React from 'react'
 import './styles.css'
-import image from '../images/adobe1.jpeg'
 
 
 const Features = ()=>{

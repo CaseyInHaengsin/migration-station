@@ -1,7 +1,6 @@
 import React from 'react'
 import './styles.css'
 import {Link} from 'react-router-dom'
-import { Grid, Row, Col } from 'react-flexbox-grid';
 
 const About = ()=>{
     return(

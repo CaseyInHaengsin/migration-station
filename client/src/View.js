@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Parallax from 'react-springy-parallax'
-import Banner from './banner/view'
 import About from './about/view'
 import Prices from './prices/view'
 import baloon from './images/balloon.png'
@@ -10,7 +9,6 @@ import background from './images/adobe1.jpeg'
 import Features from './features/view'
 import Reviews from './reviews/view'
 import ScrollAnimation from 'react-animate-on-scroll';
-import Quote from './quoteV2/view'
 import HomepageQuote from './homepageQuote/view'
 
 

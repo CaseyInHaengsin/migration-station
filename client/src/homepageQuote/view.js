@@ -4,7 +4,6 @@ import React, { Component} from 'react'
 import './styles.css'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Link} from 'react-router-dom'
-import ScrollAnimation from 'react-animate-on-scroll';
 import axios from 'axios'
 
 
@@ -47,7 +46,7 @@ class homeQuote extends Component {
 
         const info = this.state;
         this.setState({ messageLoading: true }, () => {
-          axios.post(`http://localhost:5000/api/send-message`, info)
+          axios.post(`http://boinglebox/api/send-message`, info)
             .then(response => {
               if (response.status === 200) {
                 this.setState({ messageLoading: false, success: "Thank you, your message has been sent." })
@@ -202,13 +201,23 @@ class homeQuote extends Component {
                     <Row>
 
                         <Col xs={6}>
-                        <label>Container Size</label>
-                        <select type="text" name='size' onChange={this.handleInputChange}>
-                                <option value="16"></option>
-                                <option value="16">16 Foot</option>
-                                <option value="20">20 Foot</option>
+                            <label>Container Size</label>
+                            <select type="text" name='size' onChange={this.handleInputChange}>
+                                    <option value="16"></option>
+                                    <option value="16">16 Foot</option>
+                                    <option value="20">20 Foot</option>
                             </select>
                         </Col>
+
+                        <Col xs={6}>
+                            <label>Different Delivery location?</label>
+                            <select type="text" name='location' onChange={this.handleInputChange}>
+                                    <option>No</option>
+                                    <option>Yes</option>
+                            </select>
+                        </Col>
+
+
                     </Row>
 
                     <Row>
