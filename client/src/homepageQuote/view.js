@@ -111,7 +111,7 @@ class homeQuote extends Component {
                 var value2     = parseInt(miles2Text)
 
                 if(value2 > 20){
-                    var deliveryCharge2 = (value2 - 20)*3+75;
+                    var deliveryCharge2 = (value2 - 20)*4+75;
                 }else{
                     var deliveryCharge2 = 75
                 }
@@ -349,7 +349,7 @@ class homeQuote extends Component {
                             <Col xs={12} md={12}>
                                 <h1 className='title'>Miles</h1>
                                 <p className='description'>The distance that you are from the store</p>
-                                <h2 className='value'>{this.state.miles}</h2>
+                                <h2 className='value'>{this.state.miles1}</h2>
                             </Col>
 
                             <Col xs={12} md={12}>
