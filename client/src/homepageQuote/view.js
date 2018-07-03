@@ -293,7 +293,7 @@ class homeQuote extends Component {
         }
 
         return(
-            <Grid fluid style={{width: "100%", marginTop: "9%"}}>
+            <Grid fluid style={{width: "100%"}}>
                     <Row><Col xs={12}><h1 className='title'>Boingle Box</h1></Col></Row>
                     <Row><Col xs={12}><h1 className='subTitle'>Portable Storage Containers</h1></Col></Row>
 
@@ -343,8 +343,8 @@ class homeQuote extends Component {
 
         return(
 
-            <div style={{maxHeight: "950px", minHeight: "950px"}}>
-                    <Grid style={{textAlign: "left", paddingLeft: "10%", marginTop: "5%"}}>
+            <div>
+                    <Grid style={{textAlign: "left", paddingLeft: "10%", marginTop: "2%"}}>
                         <Row>
                             <Col xs={12} md={12}>
                                 <h1 className='title'>Miles</h1>
@@ -464,7 +464,7 @@ class homeQuote extends Component {
         </script>
 
       return ( 
-            <div className="homepageQuoteContainer" style={{maxHeight: "950px", minHeight: "950px"}}>
+            <div className="homepageQuoteContainer">
 
                 {!this.state.generated ? this.state.location2 ? this.form2():this.form() : this.state.location2 ? this.results2() : this.results()}
 
