@@ -36,11 +36,19 @@
 }
 
 .steps{
-    font-size: 35px;
-    text-align: left;
+    font-size: 3rem;
+    text-align: left!important;
     margin-left: 15%;
     padding: 4%
 }
+
+.steps-content{
+    font-size: 1.2rem;
+    color: #34383D;
+    text-align: left;
+    margin-top: -3%;
+}
+
 .pricesTitle{
     font-size: 65px;
     color: #3B4045;

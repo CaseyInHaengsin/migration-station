@@ -57,20 +57,7 @@ class HomePage extends Component {
             className='hide-on-mobile'
             offset={0}
             speed={0}
-          >
-            <Parallax.Layer
-              className='balloon'
-              offset={0.03}
-              speed={0.2}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}
-              >
-              <ScrollAnimation animateIn="slideInUp" duration={4}>
-                  <img src={baloon} style={{width: "80%"}}/>
-              </ScrollAnimation>
-
-            </Parallax.Layer>
-            
-
+          >            
 
             <Parallax.Layer
               className='cloud1'
@@ -202,13 +189,9 @@ class HomePage extends Component {
             <Parallax.Layer
               offset={1}
               speed={0}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', width: "100%" }}
               >
-
-              <ScrollAnimation animateIn="slideInLeft" duration={1}>
                   <About />
-              </ScrollAnimation>
-
             </Parallax.Layer>
 
             <Parallax.Layer
@@ -250,6 +233,18 @@ class HomePage extends Component {
               <ScrollAnimation animateIn="slideInRight" duration={2}>
                   <HomepageQuote />
               </ScrollAnimation>
+            </Parallax.Layer>
+
+            <Parallax.Layer
+              className='balloon'
+              offset={0.03}
+              speed={-0.1}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}
+              >
+              <ScrollAnimation animateIn="slideInUp" duration={4}>
+                  <img src={baloon} style={{width: "90%"}}/>
+              </ScrollAnimation>
+
             </Parallax.Layer>
 
 

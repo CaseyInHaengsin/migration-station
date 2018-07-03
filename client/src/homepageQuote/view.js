@@ -6,7 +6,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
-
+// storing at storage location or their address
 
 class homeQuote extends Component {
 	constructor(props) {
@@ -29,12 +29,12 @@ class homeQuote extends Component {
             miles2: 0,
             disabled: true,
             size: '20',
-            errorMessage: "**All Fields Required Before Generating Your Quote",
             buttonText: "All Fields Required",
             delivery1: 75,
             delivery2: 75,
             generated: false,
-            location2: false
+            location2: false,
+            store: false
 		}
 		
     }

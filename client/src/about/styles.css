@@ -1,6 +1,6 @@
 .container{
     /* display: flex; */
-    /* background: url("../images/bannerBackground3.png") no-repeat bottom center;  */
+    /* background: url("../images/house.jpg") no-repeat bottom center;  */
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -11,11 +11,7 @@
 }
 
 .content{
-    margin-top: 0%;
-    width: 50%;
-    padding-left: 10%;
-    padding-right: 24%;
-    padding-top: 1%;
+    margin: 5%;
     color: #34383D;
 }
 

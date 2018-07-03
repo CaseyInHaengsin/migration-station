@@ -1,23 +1,19 @@
 import React from 'react'
 import './styles.css'
 import {Link} from 'react-router-dom'
+import house from '../images/house.jpg'
 
 const About = ()=>{
     return(
-        <div className='container' id="aboutContainer">
-            <div className='content'>
-                <h1 className='title'>Hello!</h1>
-                <p style={{fontSize: "30px"}}>Welcome to Boingle Box!  We are a locally owned portable storage unit company located right here in Salt Lake City, UT.</p>
-                <p style={{fontSize: "30px"}}>We believe that portable storage is the way of the future. Cut out the repetative trips to your storage unit on moving day and let 
-                us do the heavy lifting for you.</p>
-                <br/>
-                <br/>
-
-                <Link to='/contact' className='quoteLinkAbout'>Contact Us</Link>
-
-
+        <div className='container' id="aboutContainer" style={{width: "100%"}}>
+            <div className='content' style={{marginTop: "20%"}}>
+                <div>
+                    <h1 className='title'>Storage delivered to your doorstep.</h1>
+                    <br/>
+                    <br/>
+                    <Link to='/contact' className='quoteLinkAbout'>Contact Us</Link>
+                </div>
             </div>
-
         </div>
     )
 }
