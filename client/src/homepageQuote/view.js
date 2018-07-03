@@ -21,13 +21,20 @@ class homeQuote extends Component {
 			city: "",
 			state: "",
 			zipCode: "",
-            miles: '0',
+            miles1: 0,
+            address2: "",
+			city2: "",
+			state2: "",
+			zipCode2: "",
+            miles2: 0,
             disabled: true,
             size: '20',
             errorMessage: "**All Fields Required Before Generating Your Quote",
             buttonText: "All Fields Required",
-            delivery: 75,
-            generated: false
+            delivery1: 75,
+            delivery2: 75,
+            generated: false,
+            location2: false
 		}
 		
     }
@@ -70,30 +77,59 @@ class homeQuote extends Component {
         var currentComponent = this
 
         var origin1 = '22 east 1500 south, American Fork,UT';
-        var destinationA = this.state.address + this.state.city + ',' + this.state.state ;
+        var destinationA = this.state.address + this.state.city + ',' + this.state.state
+        var destinationB = this.state.address2 + this.state.city2 + ',' + this.state.state2
 
         var service = new google.maps.DistanceMatrixService;
 
         service.getDistanceMatrix({
           origins: [origin1],
-          destinations: [destinationA],
+          destinations: [destinationA, destinationB],
           travelMode: 'DRIVING',
           unitSystem: google.maps.UnitSystem.IMPERIAL,
           avoidHighways: false,
           avoidTolls: false
         }, function(response, status) {
+
+            console.log(response)
             console.log(response.rows[0].elements[0].distance.text)
 
-            var milesText = response.rows[0].elements[0].distance.text;
-                milesText = milesText.slice(0,4)
+            var miles1Text = response.rows[0].elements[0].distance.text;
+                miles1Text = miles1Text.slice(0,4)
+            var value1 = parseInt(miles1Text)
 
-            var value = parseInt(milesText)
+            if(value1>20){
+                var deliveryCharge1 = (value1 - 20)*3+75;
+            }else{
+                var deliveryCharge1 = 75
+            }
+
+            if(currentComponent.state.location2){
+
+                var miles2Text = response.rows[0].elements[1].distance.text;
+                    miles2Text = miles2Text.slice(0,4)
+                var value2     = parseInt(miles2Text)
+
+                if(value2 > 20){
+                    var deliveryCharge2 = (value2 - 20)*3+75;
+                }else{
+                    var deliveryCharge2 = 75
+                }
+
+                currentComponent.setState({
+                    miles2: value2,
+                    delivery2: deliveryCharge2,
+                })
+
+            }
 
             currentComponent.setState({
-                miles: value,
+                miles1: value1,
                 generated: true,
-                errorMessage: "Scroll Down for Quote Results"
+                errorMessage: "Scroll Down for Quote Results",
+                delivery1: deliveryCharge1,
             })
+
         });
 
         setTimeout(() => {
@@ -102,7 +138,13 @@ class homeQuote extends Component {
 
       }
 
-    
+    handleToggle=()=>{
+        if(this.state.location){
+            this.setState({location2: false})
+        }else{
+            this.setState({location2: true})
+        }
+    }
 
 	 handleInputChange = (event) => {
 		const value = event.target.value;
@@ -211,9 +253,9 @@ class homeQuote extends Component {
 
                         <Col xs={6}>
                             <label>Different Delivery location?</label>
-                            <select type="text" name='location' onChange={this.handleInputChange}>
-                                    <option>No</option>
-                                    <option>Yes</option>
+                            <select type="text" name='location' onChange={this.handleToggle}>
+                                    <option value='false'>No</option>
+                                    <option value='true'>Yes</option>
                             </select>
                         </Col>
 
@@ -235,11 +277,72 @@ class homeQuote extends Component {
         )
     }
 
-    results=()=>{
+    form2=()=>{
 
-        var deliveryCharge = this.state.miles > 20 ? (this.state.miles - 20)*3+75 : 75
+        const quoteButton={
+            backgroundColor: "#FFF0DF",
+            color: "#E7BD8C",
+            height: "45px",
+            width: "158px",
+            borderRadius: "10px",
+            marginTop: "5%",
+            fontSize: "17px",
+            border: "1px solid white!important",
+            cursor: "pointer",
+            transition: "0.2s ease-in-out"
+        }
 
         return(
+            <Grid fluid style={{width: "100%", marginTop: "9%"}}>
+                    <Row><Col xs={12}><h1 className='title'>Boingle Box</h1></Col></Row>
+                    <Row><Col xs={12}><h1 className='subTitle'>Portable Storage Containers</h1></Col></Row>
+
+                    <Row><Col xs={12}><h1   className='quoteHeader'>Second Location</h1></Col></Row>
+
+                    <Row>
+
+                        <Col xs={6}>
+                        <label>Address</label>
+                        <input name='address2' onChange={this.handleInputChange}></input>
+                        </Col>
+
+                        <Col xs={6}>
+                        <label>City</label>
+                        <input name='city2' onChange={this.handleInputChange}></input>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col xs={6}>
+                        <label>State</label>
+                        <input name='state2' onChange={this.handleInputChange}></input>
+                        </Col>
+
+                        <Col xs={6}>
+                        <label>Zip Code</label>
+                        <input name='zipCode2' onChange={this.handleInputChange}></input>
+                        </Col>
+                    </Row>
+
+                    <Row>
+
+                        <Col xs={12} md={12}>
+                            <button class='generateQuoteButton' disabled={this.state.disabled} style={quoteButton} onClick={this.getMapInfo} >{this.state.buttonText}</button>
+                        </Col>
+                        
+                        <Col md={12} style={{marginTop: "4%"}}>
+                            <Link to='/contact' className='quoteLinkAbout' style={{marginTop: "3%", color: "white"}}>Contact Us</Link>
+                        </Col>
+
+                    </Row>
+                </Grid>
+        )
+    }
+
+    results=()=>{
+
+        return(
+
             <div style={{maxHeight: "950px", minHeight: "950px"}}>
                     <Grid style={{textAlign: "left", paddingLeft: "10%", marginTop: "5%"}}>
                         <Row>
@@ -256,15 +359,96 @@ class homeQuote extends Component {
                             </Col>
 
                             <Col xs={12} md={12}>
-                                <h1 className='title quoteTitleFix'>Delivery</h1>
-                                <p className='description'>Please note that this only covers your first delivery charge.</p>
+                                <h1 className='title quoteTitleFix'>Delivery Charges</h1>
+                                <p className='description' style={{maxWidth: "50%"}}>Your total Delivery Charges cover Two "Drop offs" and 1 "Pick Up" to a single location.</p>
                                 <br/>
-                                <p className='description'>Pick up and delivery to new location will be covered separately.</p>
-                                <h2 className='value'>${this.state.miles > 20 ? (this.state.miles - 20)*3+75: 75}</h2>
+                                <Grid style={{marginTop: "15px"}}>
+                                    <Row>
+                                        <Col xs={6}>
+                                            <p className='description' style={{color: "#34383D"}}>Per Trip</p>
+                                            <h2 className='value'>${this.state.delivery1}</h2>
+                                        </Col>
+                                        <Col xs={6} style={{paddingLeft: "35px"}}>
+                                            <p className='description' style={{color: "#34383D"}}>Total Fees</p>
+                                            <h2 className='value'>${this.state.delivery1*3}</h2>
+                                        </Col>
+                                    </Row>
+                                </Grid>
                             </Col>
                     </Row>
                 </Grid>
             </div>
+        )
+    }
+
+    results2=()=>{
+
+        return(
+                <div>
+                    <Row>
+                        <Col xs={12} md={12}>
+                            <h1 className='title'>Miles From Store</h1>
+                        </Col>
+
+                        <Col xs={6}>
+                            <p className='description' style={{color: "#34383D"}}>{this.state.zipCode}</p>
+                            <h2 className='value'>{this.state.miles1}</h2>
+                        </Col>
+
+                        <Col xs={6} style={{paddingLeft: "35px"}}>
+                            <p className='description' style={{color: "#34383D"}}>{this.state.zipCode2}</p>
+                            <h2 className='value'>{this.state.miles2}</h2>
+                        </Col>
+
+                    </Row>
+
+                    <Row style={{marginTop: "-8%"}}>
+
+                        <Col xs={12} md={12}>
+                            <h1 className='title quoteTitleFix'>Rent</h1>
+                            <p className='description'>Your monthly rent based on the container size you chose</p>
+                            <h2 className='value'>${this.state.size === 16? 179: 199}</h2>
+                        </Col>
+
+                    </Row>
+
+                    <Row style={{marginTop: "-6%"}}>
+
+                        <Col xs={12} md={12}>
+                            <h1 className='title quoteTitleFix'>Delivery Charges</h1>
+                            <br/>
+                        </Col>
+                    </Row>
+
+                    <Row>
+
+                        <Col xs={6}>
+                            <p className='description' style={{color: "#34383D"}}>Address 1 Drop Off</p>
+                            <h2 className='value'>${this.state.delivery1}</h2>
+                        </Col>
+
+                        <Col xs={6} style={{paddingLeft: "35px"}}>
+                            <p className='description' style={{color: "#34383D"}}>Address 1 Pick Up</p>
+                            <h2 className='value'>${this.state.delivery1}</h2>
+                        </Col>
+
+                    </Row>
+
+                    <Row>
+
+                        <Col xs={6}>
+                            <p className='description' style={{color: "#34383D"}}>Address 2 Drop Off</p>
+                            <h2 className='value'>${this.state.delivery2}</h2>
+                        </Col>
+
+                        <Col xs={6} style={{paddingLeft: "35px"}}>
+                            <p className='description' style={{color: "#34383D"}}>Address 2 Pick Up</p>
+                            <h2 className='value'>${this.state.delivery2}</h2>
+                        </Col>
+
+                    </Row>
+
+                </div>
         )
     }
 
@@ -282,7 +466,8 @@ class homeQuote extends Component {
       return ( 
             <div className="homepageQuoteContainer" style={{maxHeight: "950px", minHeight: "950px"}}>
 
-                {!this.state.generated? this.form() : this.results()}
+                {!this.state.generated ? this.state.location2 ? this.form2():this.form() : this.state.location2 ? this.results2() : this.results()}
+
 
             </div>
         )
