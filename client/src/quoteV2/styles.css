@@ -24,7 +24,19 @@ button:disabled{
 }
 
 
+.storageOptions{
+	font-size: 2rem;
+}
 
+.storageOptions:hover{
+	transform: scale(1.2);
+	cursor: pointer;
+	transition: 1s ease;
+}
+
+.addressCloud1{
+	position: absolute;
+}
 
 
 

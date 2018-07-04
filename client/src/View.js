@@ -224,17 +224,6 @@ class HomePage extends Component {
               </ScrollAnimation>
             </Parallax.Layer>
 
-
-            <Parallax.Layer
-              offset={0}
-              speed={-1}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', width: "50%", marginLeft: "57%",}}
-              >
-              <ScrollAnimation animateIn="slideInRight" duration={2}>
-                  <HomepageQuote />
-              </ScrollAnimation>
-            </Parallax.Layer>
-
             <Parallax.Layer
               className='balloon'
               offset={0.03}
@@ -245,6 +234,16 @@ class HomePage extends Component {
                   <img src={baloon} style={{width: "90%"}}/>
               </ScrollAnimation>
 
+            </Parallax.Layer>
+
+            <Parallax.Layer
+              offset={0}
+              speed={-1}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', width: "50%", marginLeft: "57%",}}
+              >
+              <ScrollAnimation animateIn="slideInRight" duration={2}>
+                  <HomepageQuote />
+              </ScrollAnimation>
             </Parallax.Layer>
 
 
