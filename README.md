@@ -1,4 +1,4 @@
-# Gillagoat 
+# Marina Cove Full Stack Website 
 
 ## Installation
 

@@ -1,6 +1,4 @@
-# React-Redux-Node Boilerplate
-
-This is the front-end client for the boilerplate, created with `create-react-app`.
+# Marina Cove Full Stack Website
 
 ## Installation
 
