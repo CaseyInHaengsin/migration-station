@@ -28,6 +28,7 @@ app.use(bodyParser.json());
 // CORS stuff
 var allowedOrigins = [
     'http://localhost:3000',
+    'http://localhost:5000',
     'boinglebox.herokuapp.com',
     'https://boinglebox.herokuapp.com',
     'http://boinglebox.herokuapp.com',

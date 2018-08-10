@@ -1,12 +1,14 @@
-const express = require('express');
-const router = new express.Router();
-const User = require('../models/User');
-const mongoose = require('mongoose');
-const config = require('../../config');
-const nodemailer = require('nodemailer')
-const db_url = process.env.MONGODB_URI || config.dbUri
+const express           = require('express');
+const router            = new express.Router();
+const User              = require('../models/User');
+const mongoose          = require('mongoose');
+const config            = require('../../config');
+const nodemailer        = require('nodemailer')
+const db_url            = process.env.MONGODB_URI || config.dbUri
+const userController    = require("../controllers/usersController")
 
 mongoose.connect(db_url);
+
 
 router.route('/send-message')
     .post(function (req, res) {
@@ -23,7 +25,7 @@ router.route('/send-message')
                     host: 'smtp.gmail.com',
                     port: 587,
                     auth: {
-                        user: process.env.EMAIL_USER || 'aviatotesting@gmail.com',
+                        user: process.env.EMAIL_USER || '@gmail.com',
                         pass: process.env.EMAIL_PASS || 'testing123!'
                     }
                 });
@@ -32,7 +34,7 @@ router.route('/send-message')
                 let mailOptions = {
                     from: `"${req.body.firstName} ${req.body.lastName}" <${req.body.email}>`, // sender address
                     to: `${req.body.email}`,
-                    bcc : ['alexwalz@icloud.com, pridehsmith@gmail.com, rynwlz@gmail.com, Parkwaystoragecenter@gmail.com'], // list of receivers
+                    bcc : ['alexwalz@icloud.com'], // list of receivers
                     subject: 'BoingleBox Storage Quote', // Subject line
                     html: `
                             <p>Hello, ${req.body.firstName}!  You recently requested a quote from Boinglebox.com for our portable
@@ -85,6 +87,20 @@ router.route('/send-message')
                 message: e
             });
         }
+    });
+
+    router.route('/user')
+    .post(function (req, res) {
+        userController.create(req, res);
+    })
+    .get(function (req, res) {
+        userController.findAll(req, res);
+    })
+    .put(function (req, res) {
+        userController.update(req, res);
+    })
+    .delete(function (req, res) {
+        userController.remove(req, res);
     });
 
 module.exports = router;
