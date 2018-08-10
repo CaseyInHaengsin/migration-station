@@ -1,4 +1,4 @@
 {
-    "dbUri": "mongodb://gg-dev:ggdev@ds263408.mlab.com:63408/gilagoat-dev",
-    "jwtSecret": "hfgvjbh9woujlbefas#bhkvcjgxurys4w6e75r68otigyftuydir8txudfghkvguoygiti"    
+    "dbUri": "mongodb://gg-dev:ggdev@ds208.mlab.com:63408/gilagoat-dev",
+    "jwtSecret": "hfgvje75r68otigyftuydir8txudfghkvguoygiti"    
   }
