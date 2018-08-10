@@ -1,9 +1,11 @@
 var express = require('express');
 const path = require('path');
+const mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config');
 var cors = require('cors');
+const admin = require('./env')
 
 var app = express();
 var router = express.Router();
@@ -29,13 +31,13 @@ app.use(bodyParser.json());
 var allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5000',
-    'boinglebox.herokuapp.com',
-    'https://boinglebox.herokuapp.com',
-    'http://boinglebox.herokuapp.com',
-    'http://boinglebox.com',
-    'http://www.boinglebox.com',
-    'https://boinglebox.com',
-    'https://www.boinglebox.com'
+    'marina-cove-storage.herokuapp.com',
+    'https://marina-cove-storage.herokuapp.com',
+    'http://marina-cove-storage.herokuapp.com',
+    'http://marina-cove-storage.com',
+    'http://www.marina-cove-storage.com',
+    'https://marina-cove-storage.com',
+    'https://www.marina-cove-storage.com'
 ];
 app.use(cors({
     origin: function (origin, callback) {
@@ -70,6 +72,11 @@ app.use(cors({
 const apiRoutes = require('./server/routes/api-routes');
 app.use('/api', apiRoutes);
 
+mongoose.Promise = global.Promise;
+mongoose.connect(
+  process.env.MONGODB_URI || `mongodb://${admin.DB_USER}:${admin.DB_PASS}@${admin.DB_SERVER}`,
+  // {useMongoClient: true}
+);
 
 //If no route matches, send the client 
 router.get('*', (req, res) => {

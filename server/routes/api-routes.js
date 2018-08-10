@@ -7,7 +7,9 @@ const nodemailer        = require('nodemailer')
 const db_url            = process.env.MONGODB_URI || config.dbUri
 const userController    = require("../controllers/usersController")
 
-mongoose.connect(db_url);
+// mongoose.connect(db_url);
+
+
 
 
 router.route('/send-message')

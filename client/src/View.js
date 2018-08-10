@@ -10,7 +10,7 @@ class HomePage extends Component {
     axios.post('api/user', {
       firstName: 'Fred',
       lastName: 'Flintstone',
-      email: "email.test@test.com"
+      email: "email.test1@test.com"
     })
     .then(function (response) {
       console.log(response);

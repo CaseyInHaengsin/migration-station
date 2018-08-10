@@ -86,6 +86,10 @@ typings/
 
 # dotenv environment variables file
 .env
+env.js
+env
+*env
+*.env
 
 
 ### ReactNative ###
