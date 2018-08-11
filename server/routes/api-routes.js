@@ -6,14 +6,15 @@ const config            = require('../../config');
 const nodemailer        = require('nodemailer')
 const db_url            = process.env.MONGODB_URI || config.dbUri
 const userController    = require("../controllers/usersController")
+const appointmentController    = require("../controllers/appointmentsController")
 
 // mongoose.connect(db_url);
 
 
 
-
-router.route('/send-message')
-    .post(function (req, res) {
+    ///////// SEND AN EMAIL API ROUTE ////////////
+    router.route('/send-message')
+        .post(function (req, res) {
         // Generate test SMTP service account from ethereal.email
         // Only needed if you don't have a real mail account for testing
 
@@ -90,7 +91,12 @@ router.route('/send-message')
             });
         }
     });
+    //////////////////////////////////////////////
 
+
+    
+
+    //////////    USER API ROUTES ///////////////
     router.route('/user')
     .post(function (req, res) {
         userController.create(req, res);
@@ -104,6 +110,28 @@ router.route('/send-message')
     .delete(function (req, res) {
         userController.remove(req, res);
     });
+    ////////////////////////////////////////////
+
+
+
+    //////// APPOINTMENTS API ROUTES ///////////
+    router.route('/appointments')
+    .post(function (req, res) {
+        appointmentController.create(req, res);
+    })
+    .get(function (req, res) {
+        appointmentController.findAll(req, res);
+    })
+    .put(function (req, res) {
+        appointmentController.update(req, res);
+    })
+    .delete(function (req, res) {
+        appointmentController.remove(req, res);
+    });
+    ////////////////////////////////////////////
+
+
+
 
 module.exports = router;
 

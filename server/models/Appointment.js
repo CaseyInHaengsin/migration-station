@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 
 var AppointmentsSchema = new Schema({
     date: Date,
+    dueDate: Date,
     license: String,
     status: String,
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},

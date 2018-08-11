@@ -7,10 +7,13 @@ const Schema = mongoose.Schema;
 var UsersSchema = new Schema({
     firstName: String,
     lastName: String,
-    email: {
-        type: String,
-        index: { unique: true }
-    },
+    phoneNumber: String,
+    address: String,
+    city: String,
+    state: String,
+    zipCode: Number,
+    email: String,
+    appointments: {type: mongoose.Schema.Types.ObjectId, ref: 'Appointment'},
 });
 
   
