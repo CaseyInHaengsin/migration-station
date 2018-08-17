@@ -37,7 +37,11 @@
     color: white;
     font-family: 'Roboto';
     font-size: 5rem;
-    margin-top: -15%;
+    margin-top: 10%;
+}
+
+.buttonContainer{
+  margin-top: 50px;
 }
 
   .chevron {

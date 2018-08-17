@@ -1,0 +1,98 @@
+.nav-item{
+    cursor: pointer;
+}
+
+.about-container{
+    min-height: 100vh;
+}
+
+.services-container{
+    margin-top: 30px;
+}
+
+.panel-title{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    padding-top: 35px;
+    position: relative;
+    z-index: 999;
+    color: white;
+}
+
+.panel-subtext{
+    font-family: 'PT Sans', sans-serif;
+    padding-top: 20px;
+    padding-bottom: 35px;
+    position: relative;
+    z-index: 999;
+    color: white;
+    font-size: 1.3rem;
+}
+
+.panel-height-fix{
+    height: 250px;
+}
+
+.self-storage-section{
+    background: url('../images/storage.jpg') no-repeat center center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+}
+
+.self-storage-section:after {
+    content: " ";
+    z-index: 10;
+    display: block;
+    position: absolute;
+    height: 280px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .boat-storage-section{
+    background: url('../images/boat-service.jpg') no-repeat center center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+}
+
+.boat-storage-section:after {
+    content: " ";
+    z-index: 10;
+    display: block;
+    position: absolute;
+    height: 280px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .rv-storage-section{
+    background: url('../images/rv-service.jpg') no-repeat center center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    position: relative;
+}
+
+.rv-storage-section:after {
+    content: " ";
+    z-index: 10;
+    display: block;
+    position: absolute;
+    height: 280px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
