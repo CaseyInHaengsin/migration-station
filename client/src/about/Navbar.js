@@ -21,7 +21,7 @@ class Navbar extends Component {
                             <td className="mui--appbar-height nav-item">About Us</td>
                             <td className="mui--appbar-height nav-item">Contact</td>
                             <td className="mui--appbar-height nav-item">Pay Bill Online</td>
-                            <td className="mui--appbar-height nav-item" style={s2}>Login</td>
+                            <td className="mui--appbar-height nav-item">Login</td>
                         </tr>
                     </tbody>
                 </table>
