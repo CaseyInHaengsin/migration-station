@@ -35,31 +35,25 @@ const appointmentController    = require("../controllers/appointmentsController"
 
                 // setup email data with unicode symbols
                 let mailOptions = {
-                    from: `"${req.body.firstName} ${req.body.lastName}" <${req.body.email}>`, // sender address
-                    to: `${req.body.email}`,
+                    from: `"${req.body.name}" <${req.body.email}>`, // sender address
+                    to: 'alexwalz@icloud.com',
                     bcc : ['alexwalz@icloud.com'], // list of receivers
-                    subject: 'BoingleBox Storage Quote', // Subject line
+                    subject: 'A New Message from Marina Cove Website!', // Subject line
                     html: `
-                            <p>Hello, ${req.body.firstName}!  You recently requested a quote from Boinglebox.com for our portable
-                            storage containers!  Below is the information that was quoted to you:</p><br/><br/>
+                            <p>Hello! ${req.body.name} has sent you a message from the Marina Cove Website!
+                             Below is the information that was sent to you:</p><br/><br/>
                             
-                            <h3>Name: ${req.body.firstName} ${req.body.lastName}</h3>
-                            <h3>Phone Number: ${req.body.phoneNumber}</h3>
-                            <h3>Email: ${req.body.firstName}</h3>
-                            <h3>zip Code ${req.body.zipCode}</h3>
+                            <h3>Name: ${req.body.name} </h3>
+                            <h3>Phone Number: ${req.body.phone}</h3>
+                            <h3>Email: ${req.body.email}</h3>
+                            <h3>Subject ${req.body.subject}</h3>
                             
                             <br/>
                             <br/>
                             
-                            <h3>Miles From Store: ${req.body.miles}</h3>
-                            <h3>Container Size: ${req.body.size} Foot Container</h3>
+                            <p> ${req.body.message}</p>
                             
-                            <br/><br/>
-                            
-                            <p>If you have any questions about the quote you have recieved, please call our store at 1-844-BOINGLE</p>
-                            <br/>
-                            <p>Thanks!</p>
-                            <p>The Boingle Team.</p>` 
+                            <br/><br/>` 
                             
                             
                             

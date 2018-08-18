@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import './styles.css'
 import { Container, Row, Col, Panel } from 'muicss/react';
+import Break from '../global/Break'
+
 
 class Services extends Component {
 
@@ -13,7 +15,7 @@ class Services extends Component {
 
                 <Row>
                     <Col sm='12'>  
-                    <div className='super-title' style={{color: "#FDCA40", marginTop: "3%"}}>Marina Cove Services</div>
+                    <div className='super-title' style={{color: "#FDCA40", marginTop: "3%", marginBottom: "3%"}}>Marina Cove Services</div>
                     </Col>
                 </Row>
 
@@ -38,6 +40,7 @@ class Services extends Component {
                             <div className='panel-subtext'>Do you need a convenient, safe, secure place to store your RV? Marina Cove Storage offers RV storage at just $3.00 per foot with no length limit.</div>
                         </Panel>
                     </Col>
+                    <Col md="2" sm='12'></Col>
 
                     <a href='http://gilagoat.com' target='_blank'><Col md="4" sm='12'>
                         <Panel className='panel-height-fix gilagoat-storage-section panel-animation'>
@@ -56,6 +59,9 @@ class Services extends Component {
                 </Row>
 
             </Container>
+
+            <Break/>
+
         </div>
 
       );

@@ -1,9 +1,11 @@
-.nav-item{
-    cursor: pointer;
-}
+
 
 .about-container{
     min-height: 100vh;
+}
+
+#about-section{
+    min-height: 80vh;
 }
 
 .services-container{
@@ -12,7 +14,7 @@
 
 .super-title{
     font-family: 'Open Sans', sans-serif;
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: bold;
     padding: 35px;
     position: relative;
@@ -85,7 +87,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
   }
 
   .gilagoat-storage-section{
@@ -106,7 +108,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
   }
 
   .gilagoat-storage-section:hover:after {
@@ -139,7 +141,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
   }
 
   .boinglebox-storage-section:hover:after {
@@ -174,7 +176,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
   }
 
 
@@ -207,7 +209,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
   }
 
   .rv-storage-section:hover:after {

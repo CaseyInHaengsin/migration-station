@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import './styles.css'
-import Navbar from './Navbar';
+import Navbar from '../global/Navbar';
 import Services from './Services'
 import AboutInfo from './About'
 
