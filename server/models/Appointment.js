@@ -5,6 +5,14 @@ const Schema = mongoose.Schema;
 
 
 var AppointmentsSchema = new Schema({
+    firstName: String,
+    lastName: String,
+    phoneNumber: String,
+    address: String,
+    city: String,
+    state: String,
+    zipCode: Number,
+    email: String,
     date: Date,
     dueDate: Date,
     license: String,

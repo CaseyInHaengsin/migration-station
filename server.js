@@ -70,7 +70,9 @@ app.use(cors({
 // app.use('/auth', authRoutes);
 
 const apiRoutes = require('./server/routes/api-routes');
+const authRoutes = require('./server/routes/auth-routes');
 app.use('/api', apiRoutes);
+app.use('/api', authRoutes);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(

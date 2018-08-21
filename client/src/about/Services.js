@@ -15,7 +15,7 @@ class Services extends Component {
 
                 <Row>
                     <Col sm='12'>  
-                    <div className='super-title' style={{color: "#FDCA40", marginTop: "3%", marginBottom: "3%"}}>Marina Cove Services</div>
+                    <div className='super-title' style={{color: "#445260", marginTop: "3%", marginBottom: "3%"}}>Marina Cove Services</div>
                     </Col>
                 </Row>
 

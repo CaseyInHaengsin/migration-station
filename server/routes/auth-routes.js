@@ -5,7 +5,9 @@ const passport = require('passport');
 const config = require('../../config');
 const db_url = process.env.MONGODB_URI || config.dbUri
 mongoose.connect(db_url);
-// const validator = require('validator');
+
+require('../passport/local-signup');
+require('../passport/local-login');
 
 const router = new express.Router();
 
@@ -14,9 +16,9 @@ function validateLoginForm(payload) {
     let isFormValid = true;
     let message = '';
 
-    if (!payload || typeof payload.email !== 'string' || payload.email.trim().length === 0) {
+    if (!payload || typeof payload.username !== 'string' || payload.username.trim().length === 0) {
         isFormValid = false;
-        errors.email = 'Please provide your email address.';
+        errors.username = 'Please provide your username.';
     }
 
     if (!payload || typeof payload.password !== 'string' || payload.password.trim().length === 0) {
@@ -93,7 +95,13 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+
+    console.log(req.body)
+
     const validationResult = validateLoginForm(req.body);
+
+    console.log(validationResult)
+    
     if (!validationResult.success) {
         return res.status(400).json({
             success: false,
@@ -125,6 +133,8 @@ router.post('/login', (req, res, next) => {
             user: userData
         });
     })(req, res, next);
+
+    console.log(req.body)
 });
 
 

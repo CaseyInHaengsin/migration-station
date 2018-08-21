@@ -4,18 +4,18 @@ const PassportLocalStrategy = require('passport-local').Strategy;
 const config = require('../../config');
 
 module.exports = new PassportLocalStrategy({
-  usernameField: 'email',
+  usernameField: 'username',
   passwordField: 'password',
   session: false,
   passReqToCallback: true
-}, (req, email, password, done) => {
+}, (req, username, password, done) => {
   const userData = {
-    email: email.trim(),
+    username: username.trim(),
     password: password.trim()
   };
 
-  // find a user by email address
-  return User.findOne({ email: userData.email }, (err, user) => {
+  // find a user by username
+  return User.findOne({ username: userData.username }, (err, user) => {
     if (err) { return done(err); }
 
     if (!user) {
@@ -37,22 +37,19 @@ module.exports = new PassportLocalStrategy({
       }
 
       const payload = {
-        sub: user._id,
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        role: user.role,
+        firstName: user._firstName,
+        lastName: user.lastName,
+        username: user.username,
         id: user._id    
       };
 
       // create a token string
       const token = jwt.sign(payload, config.jwtSecret);
       const data = {        
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        role: user.role,
-        id: user._id    
+        firstName: user._firstName,
+        lastName: user.lastName,
+        username: user.username,
+        id: user._id  
       };
 
       return done(null, token, data);

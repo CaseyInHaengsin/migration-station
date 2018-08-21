@@ -32,7 +32,7 @@ class ContactForm extends Component {
 
         event.preventDefault();
 
-        axios.post('/send-message', this.state)
+        axios.post('api/send-message', this.state)
           .then(function (response) {
 
             console.log(response);
