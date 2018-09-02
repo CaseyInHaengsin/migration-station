@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 module.exports.connect = (uri) => {
     mongoose.connect(uri);
@@ -12,6 +13,7 @@ module.exports.connect = (uri) => {
     });
 
     // load models
-    require('./User');
-    require('./Appointment');
+    require('./Courses')
+    require('./Migrations')
+
 };

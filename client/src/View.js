@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
-import SplashPage from './splashPage/view'
-import About from './about/view'
-import ContactForm from './contact/view'
-import Break from './global/Break'
-import Footer from './global/Footer'
+import Navbar from './Modules/global/navbar/View'
+import Projects from './Modules/projects/View'
+import axios from 'axios'
+import { Redirect } from 'react-router-dom'
 
 
 class HomePage extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+        auth:'',
+        code: '',
+    };
+}
 
     render() {
   
       return (
-          <div style={{scrollBehavior: "smooth" }}>
-              <SplashPage/>
-              <About/>
-              <ContactForm/>
-              <Footer/>
-          </div>
+        <div style={{scrollBehavior: "smooth" }}>
+          <Navbar/>
+          <Projects/>
+        </div>
       );
     }
   }

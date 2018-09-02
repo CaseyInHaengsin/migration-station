@@ -1,0 +1,42 @@
+.projects-container{
+    margin-top: 70px;
+}
+
+.project-content{
+    background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%)!important;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.project-image{
+    max-height: 193px;
+}
+
+
+.new-projects-container{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.individual-project-view{
+    margin-top: 75px;
+    position: relative;
+    margin-bottom: 75px;
+}
+
+.individual-project-buttons{
+    text-align: center;
+    /* padding-right: 60px; */
+}
+
+.individual-project-courses{
+    margin-top: 70px;
+}
+
+.ui.card {
+    -webkit-box-shadow: 2px 4px 11px 0px rgba(0,0,0,0.75)!important;
+    -moz-box-shadow: 2px 4px 11px 0px rgba(0,0,0,0.75)!important;
+    box-shadow: 2px 4px 11px 0px rgba(0,0,0,0.75)!important;
+}

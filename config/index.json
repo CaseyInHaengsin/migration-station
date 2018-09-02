@@ -1,5 +1,5 @@
 {
-  "dbUri": "mongodb://ds119052.mlab.com:19052/heroku_njtbtlgv",
+  "dbUri": "mongodb://localhost:27017",
   "jwtSecret": "tigyftuydir8txudfghkvguoygiti"    
 }
 

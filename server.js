@@ -1,11 +1,10 @@
-var express = require('express');
-const path = require('path');
-const mongoose = require("mongoose");
-var bodyParser = require('body-parser');
-const passport = require('passport');
-const config = require('./config');
-var cors = require('cors');
-const admin = require('./env')
+var express     = require('express');
+const path      = require('path');
+const mongoose  = require("mongoose");
+var bodyParser  = require('body-parser');
+const config    = require('./config');
+var cors        = require('cors');
+const admin     = require('./env')
 
 var app = express();
 var router = express.Router();
@@ -52,31 +51,13 @@ app.use(cors({
 }));
 
 
-// // passport middleware
-// app.use(passport.initialize());
-
-// // load passport strategies
-// const localSignupStrategy = require('./server/passport/local-signup');
-// const localLoginStrategy = require('./server/passport/local-login');
-// passport.use('local-signup', localSignupStrategy);
-// passport.use('local-login', localLoginStrategy);
-
-// pass the authenticaion checker middleware
-// const authCheckMiddleware = require('./server/middleware/auth-check');
-// app.use('/api', authCheckMiddleware);
-
-// Routes
-// const authRoutes = require('./server/routes/auth-routes');
-// app.use('/auth', authRoutes);
 
 const apiRoutes = require('./server/routes/api-routes');
-const authRoutes = require('./server/routes/auth-routes');
 app.use('/api', apiRoutes);
-app.use('/api', authRoutes);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URI || `mongodb://${admin.DB_USER}:${admin.DB_PASS}@${admin.DB_SERVER}`,
+  process.env.MONGODB_URI || `mongodb://localhost:27017`,
   // {useMongoClient: true}
 );
 

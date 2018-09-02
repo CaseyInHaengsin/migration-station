@@ -1,132 +1,143 @@
-const express           = require('express');
-const router            = new express.Router();
-const User              = require('../models/User');
-const mongoose          = require('mongoose');
-const config            = require('../../config');
-const nodemailer        = require('nodemailer')
-const db_url            = process.env.MONGODB_URI || config.dbUri
-const userController    = require("../controllers/usersController")
-const appointmentController    = require("../controllers/appointmentsController")
+const express                       = require('express');
+const router                        = new express.Router();
+const migrationsController          = require("../controllers/migrationsController")
+const coursesController             = require("../controllers/coursesController")
+const runMigrationsController       = require("../controllers/runMigration")
+const checkMigrationsController     = require("../controllers/checkMigrations")
+const countMigrationsController     = require("../controllers/countMigrations")
+const axios                         = require('axios')
 
 // mongoose.connect(db_url);
 
 
 
-    ///////// SEND AN EMAIL API ROUTE ////////////
-    router.route('/send-message')
-        .post(function (req, res) {
-        // Generate test SMTP service account from ethereal.email
-        // Only needed if you don't have a real mail account for testing
-
-        console.log(req.body)
-        console.log("sending email")
-
-        try {
-            nodemailer.createTestAccount((err, account) => {
-                // create reusable transporter object using the default SMTP transport
-                const transporter = nodemailer.createTransport({
-                    host: 'smtp.gmail.com',
-                    port: 587,
-                    auth: {
-                        user: process.env.EMAIL_USER || '@gmail.com',
-                        pass: process.env.EMAIL_PASS || 'testing123!'
-                    }
-                });
-
-                // setup email data with unicode symbols
-                let mailOptions = {
-                    from: `"${req.body.name}" <${req.body.email}>`, // sender address
-                    to: 'alexwalz@icloud.com',
-                    bcc : ['alexwalz@icloud.com'], // list of receivers
-                    subject: 'A New Message from Marina Cove Website!', // Subject line
-                    html: `
-                            <p>Hello! ${req.body.name} has sent you a message from the Marina Cove Website!
-                             Below is the information that was sent to you:</p><br/><br/>
-                            
-                            <h3>Name: ${req.body.name} </h3>
-                            <h3>Phone Number: ${req.body.phone}</h3>
-                            <h3>Email: ${req.body.email}</h3>
-                            <h3>Subject ${req.body.subject}</h3>
-                            
-                            <br/>
-                            <br/>
-                            
-                            <p> ${req.body.message}</p>
-                            
-                            <br/><br/>` 
-                            
-                            
-                            
-                            // html body
-                };
-
-                // send mail with defined transport object
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        // res.status(500).json({
-                        //     message: error
-                        // });
-                    }
-                    // console.log('Message sent: %s', info.messageId);
-                    // Preview only available when sending through an Ethereal account
-                    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-                    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-                    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-                });
-            });
-            res.status(200).json({
-                message: "Message sent successfully"
-            });
-        }
-        catch (e) {
-            res.status(500).json({
-                message: e
-            });
-        }
+    //////////    Project API ROUTES ///////////////
+    router.route('/projects')
+    .post(function (req, res) {
+        migrationsController.create(req, res);
+    })
+    .get(function (req, res) {
+        migrationsController.findAll(req, res);
+    })
+    .put(function (req, res) {
+        migrationsController.update(req, res);
+    })
+    .delete(function (req, res) {
+        migrationsController.remove(req, res);
     });
-    //////////////////////////////////////////////
-
+    ////////////////////////////////////////////
 
     
 
-    //////////    USER API ROUTES ///////////////
-    router.route('/user')
+    //////////    Project API ROUTES ///////////////
+    router.route('/projects/:id')
     .post(function (req, res) {
-        userController.create(req, res);
+        migrationsController.create(req, res);
     })
     .get(function (req, res) {
-        userController.findAll(req, res);
+        migrationsController.findById(req, res);
     })
     .put(function (req, res) {
-        userController.update(req, res);
+        migrationsController.update(req, res);
     })
     .delete(function (req, res) {
-        userController.remove(req, res);
+        migrationsController.remove(req, res);
+    });
+    ////////////////////////////////////////////
+
+    
+
+
+    //////////    Courses API ROUTES ///////////////
+    router.route('/courses')
+    .post(function (req, res) {
+        coursesController.create(req, res);
+    })
+    .get(function (req, res) {
+        coursesController.findAll(req, res);
+    })
+    .put(function (req, res) {
+        coursesController.update(req, res);
+    })
+    .delete(function (req, res) {
+        coursesController.remove(req, res);
     });
     ////////////////////////////////////////////
 
 
-    router.route('/user-login')
-    .post(function (req, res) {
-        userController.findeOne(req, res);
-    })
 
-    //////// APPOINTMENTS API ROUTES ///////////
-    router.route('/appointments')
-    .post(function (req, res) {
-        appointmentController.create(req, res);
-    })
+
+    //////////    Courses API ROUTES ///////////////
+    router.route('/courses/:id')
     .get(function (req, res) {
-        appointmentController.findAll(req, res);
+        coursesController.findById(req, res);
     })
     .put(function (req, res) {
-        appointmentController.update(req, res);
+        coursesController.update(req, res);
     })
     .delete(function (req, res) {
-        appointmentController.remove(req, res);
+        coursesController.remove(req, res);
     });
     ////////////////////////////////////////////
+
+
+    //////////  OAUTH API ROUTES ///////////////
+    router.route('/auth/oauth')
+        .get(function (req, res) {
+
+            var client_id = '170000000000498'
+            axios.get(`https://siteadmin.instructure.com/login/oauth2/auth?client_id=${client_id}&response_type=code&redirect_uri=http://localhost:3000`).then(function(response){
+                console.log(response)
+            })
+
+        })
+        .put(function (req, res) {
+            
+            
+        })
+        .delete(function (req, res) {
+            
+
+        });
+
+    ////////////////////////////////////////////
+
+
+    //////////  RUN MIGRATION API ROUTES ///////////////
+    router.route('/start-migration/:id')
+    .post(function (req, res) {
+        runMigrationsController.findById(req, res);
+    })
+    .get(function (req, res) {
+        runMigrationsController.findById(req, res);
+    })
+    .put(function (req, res) {
+        runMigrationsController.update(req, res);
+    })
+    .delete(function (req, res) {
+        runMigrationsController.remove(req, res);
+    });
+    ////////////////////////////////////////////
+
+
+
+    //////////  RUN MIGRATION API ROUTES ///////////////
+    router.route('/check-migration/:id')
+        .get(function (req, res) {
+            checkMigrationsController.findById(req, res);
+        })
+    ////////////////////////////////////////////
+
+
+    //////////  RUN MIGRATION API ROUTES ///////////////
+        router.route('/course-count/:id')
+        .get(function (req, res) {
+            countMigrationsController.findById(req, res);
+        })
+    ////////////////////////////////////////////
+
+
+
 
 
 
