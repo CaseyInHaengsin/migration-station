@@ -86,7 +86,7 @@ class ProjectView extends Component {
 
         <div>  
 
-            <Button>
+            <Button color='yellow'>
                 <Button.Content visible>              
                     <CSVReader
                         cssClass="react-csv-input"

@@ -244,7 +244,7 @@ class ProjectView extends Component {
                     <Header as='h1' icon style={{marginBottom: "40px"}}>
                         <Icon name='address book outline' />
                         {this.state.project.name}
-                        <Progress style ={{width: "50%", marginLeft: "auto", marginRight: "auto"}} success percent={((this.state.complete + this.state.failed)/this.state.count.toFixed(0))*100} progress />
+                        <Progress indicating style ={{width: "50%", marginLeft: "auto", marginRight: "auto"}} color='yellow' percent={((this.state.complete + this.state.failed)/this.state.count.toFixed(0))*100} progress />
                         <Divider horizontal>Project Details</Divider>
                         <Header.Subheader><a href={url} target='_blank'>{this.state.project.name}'s Account Settings Page</a></Header.Subheader>
                         <Header.Subheader>{this.state.project.courses.length} courses added to Project.</Header.Subheader>
@@ -256,7 +256,7 @@ class ProjectView extends Component {
                                 <Grid.Column>
                                     <Statistic color='yellow'>
                                         <Statistic.Value>
-                                            <Icon name='calendar' style={{paddingRight: "5px"}}/>
+                                            <Icon name='calendar' style={{paddingRight: "15px"}}/>
                                             {this.state.project.date}
                                         </Statistic.Value>
                                         <Statistic.Label>Date Created</Statistic.Label>
@@ -266,6 +266,7 @@ class ProjectView extends Component {
                                 <Grid.Column>
                                      <Statistic color='yellow'>
                                         <Statistic.Value>
+                                            <Icon name='upload' style={{paddingRight: "15px"}}/>
                                             Importer
                                         </Statistic.Value>
                                         <Statistic.Label>{this.state.project.importType.toUpperCase().split('_').join(' ')}</Statistic.Label>
@@ -275,6 +276,7 @@ class ProjectView extends Component {
                                 <Grid.Column>
                                     <Statistic color='yellow'>
                                         <Statistic.Value>
+                                            <Icon name='road' style={{paddingRight: "15px"}}/>
                                             Path
                                         </Statistic.Value>
                                         <Statistic.Label>{this.state.project.path.toUpperCase()}</Statistic.Label>
@@ -371,35 +373,35 @@ class ProjectView extends Component {
             <div className='individual-project-buttons'>
 
                 <Button.Group>
-                    <Button animated onClick={this.editProject}>
+                    <Button animated onClick={this.editProject} color='yellow'>
                         <Button.Content visible>Edit Project</Button.Content>
                         <Button.Content hidden>
                             <Icon name='pencil'/>
                         </Button.Content>
                     </Button>
                     <Button.Or />
-                    <Button animated >
+                    <Button animated color='yellow'>
                         <Button.Content visible>Mark Complete</Button.Content>
                         <Button.Content hidden>
                             <Icon name='check'/>
                         </Button.Content>
                     </Button>
                     <Button.Or />
-                    <Button animated onClick={this.deleteProject}>
+                    <Button animated onClick={this.deleteProject} color='yellow'>
                         <Button.Content visible>Delete Project</Button.Content>
                         <Button.Content hidden>
                             <Icon name='delete' />
                         </Button.Content>
                     </Button>
                     <Button.Or />
-                    <Button animated onClick={this.startMigration} disabled={this.state.importDisabled}>
+                    <Button animated onClick={this.startMigration} disabled={this.state.importDisabled} color='yellow'>
                         <Button.Content visible>Start Migration</Button.Content>
                         <Button.Content hidden>
                             <Icon name='hourglass start' />
                         </Button.Content>
                     </Button>
                     <Button.Or />
-                    <Button animated onClick={this.courseCheck} disabled={this.state.courseCheckDisabled}>
+                    <Button animated onClick={this.courseCheck} disabled={this.state.courseCheckDisabled} color='yellow'>
                         <Button.Content visible>Check Courses</Button.Content>
                         <Button.Content hidden>
                             <Icon name='question' />
@@ -407,7 +409,7 @@ class ProjectView extends Component {
                     </Button>
                     <Button.Or />
                     
-                    <FileReader projectId={this.state.project._id} update={this.update} error={this.error} import={this.state.import}/>
+                    <FileReader projectId={this.state.project._id} update={this.update} error={this.error} import={this.state.import} />
 
 
                 </Button.Group>
