@@ -1,5 +1,12 @@
 # Migration Station Full Stack Website 
 
+
+## Prerequisites
+
+*MongoDB
+*Node
+*Nodemon
+
 ## Installation
 
 1. Install all dependencies from the server level `yarn install`
