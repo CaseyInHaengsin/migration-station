@@ -5,7 +5,7 @@ module.exports = {
     findAll: function (req, res) {
         db
             .find({})
-            // .populate({ path: 'Courses', model: coursesDB})
+            .populate({ path: 'Courses', model: coursesDB})
             .then(function (dbModel) {
                 res.json(dbModel);
             })
@@ -18,7 +18,21 @@ module.exports = {
             .findById(req.params.id)
             .populate('Course')
             .then(function (dbModel) {
-                res.json(dbModel);
+
+                var data={
+                    name: dbModel.name,
+                    date: dbModel.date,
+                    _id: dbModel._id,
+                    path: dbModel.path,
+                    courseShells: dbModel.courseShells,
+                    importType: dbModel.importType,
+                    complete: dbModel.complete,
+                    domain: dbModel.domain
+
+                }
+                
+                res.json(data);
+
             })
             .catch(function (err) {
                 res.json(err);

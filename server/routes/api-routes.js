@@ -66,6 +66,15 @@ const axios                         = require('axios')
 
 
 
+    ////////// Courses By Project ROUTES ///////////////
+    router.route('/project-courses/:id')
+    .get(function (req, res) {
+        coursesController.findAll(req, res);
+    })
+    ////////////////////////////////////////////
+
+
+
 
     //////////    Courses API ROUTES ///////////////
     router.route('/courses/:id')

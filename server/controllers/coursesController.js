@@ -4,7 +4,7 @@ const migrationsDB = require ("../models/Migrations")
 module.exports = {
     findAll: function (req, res) {
         db
-            .find({})
+            .find({migration: req.params.id})
             .then(function (dbModel) {
                 res.json(dbModel);
             })

@@ -40,6 +40,12 @@ class ProjectView extends Component {
         };
     }
 
+    componentDidMount=()=>{
+        var projectId = this.props.match.params.id
+        this.getData(projectId)
+        this.getCourseCount(projectId)
+    }
+
     courseCheck=(getData)=>{
         var projectId = this.props.match.params.id
         this.getData(projectId)
@@ -132,7 +138,6 @@ class ProjectView extends Component {
             </div>
         )
     }
-
 
     startMigration=(e)=>{
         var projectId = this.props.match.params.id
@@ -247,7 +252,7 @@ class ProjectView extends Component {
                         <Progress indicating style ={{width: "50%", marginLeft: "auto", marginRight: "auto"}} color='yellow' percent={((this.state.complete + this.state.failed)/this.state.count.toFixed(0))*100} progress />
                         <Divider horizontal>Project Details</Divider>
                         <Header.Subheader><a href={url} target='_blank'>{this.state.project.name}'s Account Settings Page</a></Header.Subheader>
-                        <Header.Subheader>{this.state.project.courses.length} courses added to Project.</Header.Subheader>
+                        <Header.Subheader>{this.state.count} courses added to Project.</Header.Subheader>
                     </Header>
 
                       <Grid columns={3} divided style={{marginBottom: "60px"}}>
@@ -286,32 +291,15 @@ class ProjectView extends Component {
                             </Grid.Row>
                       </Grid>
 
-
-
-                  <Header as='h2'>
-                    <Icon name='settings' />
-                    <Header.Content>
-                        Course Details
-                    <Header.Subheader>List of Courses Associated with this project</Header.Subheader>
-                    </Header.Content>
-                </Header>
-
             </div>
         )
-    }
-
-
-    componentDidMount=()=>{
-        var projectId = this.props.match.params.id
-        this.getData(projectId)
-        this.getCourseCount(projectId)
     }
 
     getCourseCount=(projectId)=>{
         var currentComponent = this
         axios.get('/api/course-count/'+projectId).then(function(response){
+
             var data = response.data
-            console.log(data)
 
             currentComponent.setState({
                 notImported: data.notImported,
@@ -323,12 +311,9 @@ class ProjectView extends Component {
             }, function(){
 
                 var counter = this.state.notImported + this.state.importing + this.state.failed + this.state.queued + this.state.complete;
-                
-                
-                
+
                 currentComponent.setState({count: counter }, function(){
-                    console.log(this.state.complete + this.state.failed, this.state.count)
-                    console.log()
+                    console.log(this.state)
                 })
 
                 if(this.state.importing > 0){
@@ -409,6 +394,13 @@ class ProjectView extends Component {
                     </Button>
                     <Button.Or />
                     
+                    <Button animated href={'/courses/' + this.props.match.params.id} color='yellow'>
+                        <Button.Content visible>View Courses</Button.Content>
+                        <Button.Content hidden>
+                            <Icon name='question' />
+                        </Button.Content>
+                    </Button>
+                    <Button.Or />
                     <FileReader projectId={this.state.project._id} update={this.update} error={this.error} import={this.state.import} />
 
 
@@ -425,49 +417,6 @@ class ProjectView extends Component {
                 <div className='individual-project-courses'>
 
                 {this.state.edit ? this.editProjectDetails() : this.returnProjectDetails() }
-
-                <div style={{textAlign: "right", marginRight: "30px"}}>
-                    <Checkbox toggle defaultChecked label='Not Started' style={{paddingRight: "10px"}}  name='showNotStarted'/>
-                    <Checkbox toggle defaultChecked label='Importing' style={{paddingRight: "10px"}} name='showImporting'/>
-                    <Checkbox toggle defaultChecked label='Queued' style={{paddingRight: "10px"}} name='showQueued'/>
-                    <Checkbox toggle defaultChecked label='Failed' style={{paddingRight: "10px"}} name='showFailed'/>
-                    <Checkbox toggle defaultChecked label='Complete' style={{paddingRight: "10px"}} name='showComplete'/>
-                </div>
-
-                  <Table selectable>
-
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell textAlign='center'>Source</Table.HeaderCell>
-                            <Table.HeaderCell textAlign='center'>SIS ID</Table.HeaderCell>
-                            <Table.HeaderCell textAlign='center'>Course Name</Table.HeaderCell>
-                            <Table.HeaderCell textAlign='center'>Status</Table.HeaderCell>
-                            <Table.HeaderCell textAlign='center'></Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-
-                        {this.state.project.courses.map((course, key)=>{
-                            return(
-                                <CourseView 
-                                    courseID={course} 
-                                    key={key} 
-                                    domain={this.state.project.domain} 
-                                    notStarted={this.state.showNotStarted} 
-                                    importing={this.state.showImporting} 
-                                    queued={this.state.showQueued}
-                                    complete={this.state.showComplete}
-                                    failed={this.state.showFailed}
-                                />
-                            )
-                        })}
-
-                
-                    
-                    </Table.Body>
-
-                </Table>
 
 
                 </div>
