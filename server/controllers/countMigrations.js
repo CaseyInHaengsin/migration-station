@@ -1,13 +1,14 @@
-const Migrationsdb  = require('../models/Migrations');
+const db = require("../models/Courses")
 const axios         = require("axios");
 
 module.exports = {
 
-    findById: function (req, res) {
-        Migrationsdb
-            .findById(req.params.id)
-            .populate('Course')
+    findAll: function (req, res) {
+        db
+            .find({migration: req.params.id})
             .then(function (dbModel) {
+
+                var counter = 0
 
                 var data={
                     notImported: 0,
@@ -17,40 +18,37 @@ module.exports = {
                     failed: 0
                 }
 
-                const promises = dbModel.courses.map(course=> {
+                dbModel.forEach(function(course) {
+                    var status = course.status
+                    if (status === 'Complete'){
+                        data.complete++
+                    }else if( status === 'Not Imported'){
+                        data.notImported++
+                    }else if( status === 'Queued'){
+                        data.queued++
+                    }else if( status === 'Failed'){
+                        data.failed++
+                    }else if( status === 'Importing'){
+                        data.importing++
+                    }
+                    counter++
+                  });
+
+                  if(counter === dbModel.length){
+                    Object.assign(data, {count: (data.complete + data.importing + data.failed + data.queued +data.notImported)});
+                    res.json(data)
+                  }
                     
-                    return axios.get("http://localhost:3000/api/courses/"+course)
-              
-                       .then(function (response) {
-              
-                        var status = response.data.status
 
-                        if (status === 'Complete'){
-                            data.complete++
-                        }else if( status === 'Not Imported'){
-                            data.notImported++
-                        }else if( status === 'Queued'){
-                            data.queued++
-                        }else if( status === 'Failed'){
-                            data.failed++
-                        }else if( status === 'Importing'){
-                            data.importing++
-                        }
-           
-                         return data
-              
-                       })
-               })
-              
-
-               Promise.all(promises)
-                .then(data => {
-                    var finalData = data[data.length - 1]
-                    res.json(finalData)
-                })
-                .catch(error => {
-                  console.log("error", error);
-                });
+            //    Promise.all(promises)
+            //     .then(data => {
+            //         var finalData = data[data.length - 1]
+            //         console.log(finalData)
+            //         res.json(finalData)
+            //     })
+            //     .catch(error => {
+            //       console.log("error", error);
+            //     });
 
             }).catch(function (err) {
                 res.json(err);

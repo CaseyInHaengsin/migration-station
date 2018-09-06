@@ -26,7 +26,7 @@ class ProjectView extends Component {
             errorMessage: '',
             importDisabled: false,
             courseCheckDisabled: false,
-            count: 0,
+            count: 1,
             notImported: 0,
             importing: 0,
             complete: 0,
@@ -36,7 +36,8 @@ class ProjectView extends Component {
             showImporting: true,
             showQueued: true,
             showFailed: true,
-            showComplete: true
+            showComplete: true,
+            importCount: 0
         };
     }
 
@@ -60,7 +61,7 @@ class ProjectView extends Component {
 
     update=(data)=>{
         
-        this.setState({confirm: true, count: data.length})
+        this.setState({confirm: true, importCount: data.length})
     }
 
     error=(errMessage)=>{
@@ -73,6 +74,25 @@ class ProjectView extends Component {
 
     confirm=()=>{
         this.setState({import: true, confirm: false})
+    }
+    showConfirm=()=>{
+        return(
+            <div style={{marginTop: "40px"}}>
+                <Message icon style={{width: "700px", marginLeft: "auto", marginRight: "auto"}}>
+                    <Icon name='circle notched' loading />
+                    <Message.Content>
+                    <Message.Header>Are you sure you want to add these {this.state.importCount-1} courses to this project?</Message.Header>
+                    <br/>
+                    <br/>
+                    <Button.Group>
+                        <Button onClick={this.deny}>Cancel</Button>
+                        <Button.Or />
+                        <Button positive onClick={this.confirm}>Import</Button>
+                    </Button.Group>
+                    </Message.Content>
+                </Message>
+            </div>
+        )
     }
 
     editProject=()=>{
@@ -102,25 +122,6 @@ class ProjectView extends Component {
 
     }
 
-    showConfirm=()=>{
-        return(
-            <div style={{marginTop: "40px"}}>
-                <Message icon style={{width: "700px", marginLeft: "auto", marginRight: "auto"}}>
-                    <Icon name='circle notched' loading />
-                    <Message.Content>
-                    <Message.Header>Are you sure you want to add these {this.state.count-1} courses to this project?</Message.Header>
-                    <br/>
-                    <br/>
-                    <Button.Group>
-                        <Button onClick={this.deny}>Cancel</Button>
-                        <Button.Or />
-                        <Button positive onClick={this.confirm}>Import</Button>
-                    </Button.Group>
-                    </Message.Content>
-                </Message>
-            </div>
-        )
-    }
 
     showError=(errMessage)=>{
         return(
@@ -189,12 +190,12 @@ class ProjectView extends Component {
         }));
 
         const options = [
-            { key: 'blackboard', text: 'Blackboard', value: 'blackboard' },
-            { key: 'moodle', text: 'Moodle', value: 'moodle' },
-            { key: 'angel', text: 'Angel', value: 'angel' },
-            { key: 'common cartridge', text: 'Common Cartridge', value: 'common cartridge' },
-            { key: 'd2l', text: 'Desire To Learn', value: 'd2l' },
-            { key: 'canvas', text: 'Canvas Course Export', value: 'canvas' },
+            { key: 'blackboard', text: 'Blackboard', value: 'blackboard_exporter' },
+            { key: 'moodle', text: 'Moodle', value: 'moodle_converter' },
+            { key: 'angel', text: 'Angel', value: 'angel_exporter' },
+            { key: 'common cartridge', text: 'Common Cartridge', value: 'common_cartridge_importer' },
+            { key: 'd2l', text: 'Desire To Learn', value: 'd2l_exporter' },
+            { key: 'canvas', text: 'Canvas Course Export', value: 'canvas_cartridge_importer' },
           ]
 
           const shellOptions = [
@@ -300,30 +301,26 @@ class ProjectView extends Component {
         axios.get('/api/course-count/'+projectId).then(function(response){
 
             var data = response.data
-
             currentComponent.setState({
                 notImported: data.notImported,
                 importing: data.importing,
                 complete: data.complete,
                 failed: data.failed,
-                queued: data.queued
+                queued: data.queued,
+                count: data.count
 
             }, function(){
 
-                var counter = this.state.notImported + this.state.importing + this.state.failed + this.state.queued + this.state.complete;
-
-                currentComponent.setState({count: counter }, function(){
-                    console.log(this.state)
-                })
-
                 if(this.state.importing > 0){
+                    console.log("Courses Are Currently Importing")
                     currentComponent.setState({importDisabled: true})
                 }
 
             })
 
-
         })
+
+
     }
 
     getData=(projectId)=>{

@@ -13,7 +13,12 @@ class CoursesView extends Component {
         this.state = {
             updating: true,
             domain: "",
-            data:{}
+            data:{},
+            notImported: true,
+            importing: true,
+            queued: true,
+            complete: true,
+            failed: true
         };
     }
 
@@ -34,17 +39,57 @@ class CoursesView extends Component {
 
     }
 
+    handleInputChangeNotImported = (event) => {
+        this.setState(prevState => ({
+        notImported: !prevState.notImported
+        }), function(){
+            console.log(this.state.notImported)
+        });
+    }
+
+    handleInputChangeComplete = (event) => {
+        this.setState(prevState => ({
+        complete: !prevState.complete
+        }), function(){
+            console.log(this.state.complete)
+        });
+    }
+
+    handleInputChangeQueued = (event) => {
+        this.setState(prevState => ({
+        queued: !prevState.queued
+        }), function(){
+            console.log(this.state.queued)
+        });
+    }
+
+    handleInputChangeImporting = (event) => {
+        this.setState(prevState => ({
+        importing: !prevState.importing
+        }), function(){
+            console.log(this.state.importing)
+        });
+    }
+
+    handleInputChangeFailed = (event) => {
+        this.setState(prevState => ({
+        failed: !prevState.failed
+        }), function(){
+            console.log(this.state.failed)
+        });
+    }
+
 
     returnCourses=()=>{
         return(
             <div>
 
                 <div style={{textAlign: "right", marginRight: "30px"}}>
-                    <Checkbox toggle defaultChecked label='Not Started' style={{paddingRight: "10px"}}  name='showNotStarted'/>
-                    <Checkbox toggle defaultChecked label='Importing' style={{paddingRight: "10px"}} name='showImporting'/>
-                    <Checkbox toggle defaultChecked label='Queued' style={{paddingRight: "10px"}} name='showQueued'/>
-                    <Checkbox toggle defaultChecked label='Failed' style={{paddingRight: "10px"}} name='showFailed'/>
-                    <Checkbox toggle defaultChecked label='Complete' style={{paddingRight: "10px"}} name='showComplete'/>
+                    <Checkbox toggle defaultChecked label='Not Started' style={{paddingRight: "10px"}} name='notImported' onClick={this.handleInputChangeNotImported}/>
+                    <Checkbox toggle defaultChecked label='Importing' style={{paddingRight: "10px"}} name='importing' onClick={this.handleInputChangeImporting}/>
+                    <Checkbox toggle defaultChecked label='Queued' style={{paddingRight: "10px"}} name='queued' onClick={this.handleInputChangeQueued}/>
+                    <Checkbox toggle defaultChecked label='Failed' style={{paddingRight: "10px"}} name='failed' onClick={this.handleInputChangeFailed}/>
+                    <Checkbox toggle defaultChecked label='Complete' style={{paddingRight: "10px"}} name='complete' onClick={this.handleInputChangeComplete}/>
                 </div>
 
                 <Table celled>
@@ -62,12 +107,60 @@ class CoursesView extends Component {
                 
                     <Table.Body>
 
-                            {this.state.data.map(course=>{
-                                return(
-                                    <CourseView errMessage={course.errMessage} domain={this.state.domain} key={course._id} source={course.source} sisId={course.sis_id} courseName={course.course_name} status={course.status}/>
-                                )
+                    {this.state.importing ?
+                            this.state.data.map(course=>{
+                                if(course.status === 'Importing'){
+                                    return(
+                                        <CourseView errMessage={course.errMessage} domain={this.state.domain} key={course._id} source={course.source} sisId={course.sis_id} courseName={course.course_name} status={course.status}/>
+                                    )
+                                }
                             })
-                        }
+                            : null
+                    }
+
+                    {this.state.notImported ?
+                            this.state.data.map(course=>{
+                                if(course.status === 'Not Imported'){
+                                    return(
+                                        <CourseView errMessage={course.errMessage} domain={this.state.domain} key={course._id} source={course.source} sisId={course.sis_id} courseName={course.course_name} status={course.status}/>
+                                    )
+                                }
+                            })
+                            : null
+                    }
+
+                    {this.state.queued ?
+                            this.state.data.map(course=>{
+                                if(course.status === 'Queued'){
+                                    return(
+                                        <CourseView errMessage={course.errMessage} domain={this.state.domain} key={course._id} source={course.source} sisId={course.sis_id} courseName={course.course_name} status={course.status}/>
+                                    )
+                                }
+                            })
+                            : null
+                    }
+
+                    {this.state.complete ?
+                            this.state.data.map(course=>{
+                                if(course.status === 'Complete'){
+                                    return(
+                                        <CourseView errMessage={course.errMessage} domain={this.state.domain} key={course._id} source={course.source} sisId={course.sis_id} courseName={course.course_name} status={course.status}/>
+                                    )
+                                }
+                            })
+                            : null
+                    }
+
+                    {this.state.failed ?
+                            this.state.data.map(course=>{
+                                if(course.status === 'Failed'){
+                                    return(
+                                        <CourseView errMessage={course.errMessage} domain={this.state.domain} key={course._id} source={course.source} sisId={course.sis_id} courseName={course.course_name} status={course.status}/>
+                                    )
+                                }
+                            })
+                            : null
+                    }
 
                     </Table.Body>
                 </Table>
@@ -75,6 +168,8 @@ class CoursesView extends Component {
         )
     }
 
+
+    
     returnLoader=()=>{
         return(
             <Segment style={{height: '100vh', marginTop: "-.5vh"}}>

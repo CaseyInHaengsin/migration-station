@@ -22,6 +22,8 @@ module.exports = {
                 var createShells    = dbModel.createShells
                 var path            = dbModel.path
 
+                console.log(importType)
+
                 dbModel.courses.map(course=>{
                     throttle(function() {
                         axios.get("http://localhost:3000/api/courses/"+course)
@@ -94,9 +96,10 @@ module.exports = {
                                                     
 
                                             }).catch(function(err){
-                                                var errMessage = 'No course was found with this sis_id'
+                                                var errMessage = err.response.data.message
                                                 updateError(CourseId, errMessage)
                                                 console.log(err.response.status)
+                                                console.log(err.response.data.message)
                                             })
 
                                         }else{

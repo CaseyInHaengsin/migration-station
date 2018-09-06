@@ -60,7 +60,11 @@ class ProjectView extends Component {
 
     postCourses = data => {
 
-        this.state.data.slice(1).map(course=>{
+        var counter     = 0;
+        var arrayLength = this.state.data.length-1
+        var project     = this.props.projectId
+
+        this.state.data.slice(1).forEach(course=>{
                 axios.post('/api/courses', {
                     migration: this.props.projectId,
                     source: course[0],
@@ -70,7 +74,13 @@ class ProjectView extends Component {
                     status: 'Not Imported',
                 })
                 .then(function (response) {
-                    
+
+                    counter++
+                    console.log(counter, arrayLength)
+                    if(counter === arrayLength){
+                        window.location = "/courses/"+project;
+                    }
+
                 })
                 .catch(function (error) { console.log(error) })
 

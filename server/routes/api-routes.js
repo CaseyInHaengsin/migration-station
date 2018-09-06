@@ -141,7 +141,7 @@ const axios                         = require('axios')
     //////////  RUN MIGRATION API ROUTES ///////////////
         router.route('/course-count/:id')
         .get(function (req, res) {
-            countMigrationsController.findById(req, res);
+            countMigrationsController.findAll(req, res);
         })
     ////////////////////////////////////////////
 
