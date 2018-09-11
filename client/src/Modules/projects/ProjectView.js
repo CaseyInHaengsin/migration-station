@@ -47,6 +47,16 @@ class ProjectView extends Component {
         this.getCourseCount(projectId)
     }
 
+    killJob=()=>{
+        axios.post('/api/kill-migration/'+this.props.match.params.id,{id: this.props.match.params.id})
+        .then(function(response){
+            console.log(response)
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+    }
+
     courseCheck=(getData)=>{
         var projectId = this.props.match.params.id
         this.getData(projectId)
@@ -383,8 +393,15 @@ class ProjectView extends Component {
                         </Button.Content>
                     </Button>
                     <Button.Or />
+                    <Button animated onClick={this.killJob}  color='yellow'>
+                        <Button.Content visible>Stop Migration</Button.Content>
+                        <Button.Content hidden>
+                            <Icon name='stopwatch' />
+                        </Button.Content>
+                    </Button>
+                    <Button.Or />
                     <Button animated onClick={this.courseCheck} disabled={this.state.courseCheckDisabled} color='yellow'>
-                        <Button.Content visible>Check Courses</Button.Content>
+                        <Button.Content visible>Check Course Status'</Button.Content>
                         <Button.Content hidden>
                             <Icon name='question' />
                         </Button.Content>

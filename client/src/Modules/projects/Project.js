@@ -21,7 +21,7 @@ const Project = (props) => (
             </Card.Content>
 
             <Card.Content extra>
-                <Icon name='user' />{props.importType}<br/><br/>
+                <Icon name='user' />{props.importType.toUpperCase().split('_').join(' ')}<br/><br/>
 
                 <a href={'/projects/' + props.id}> <Button animated>
                     <Button.Content visible>Import Details</Button.Content>

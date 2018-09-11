@@ -111,8 +111,8 @@ class NewProject extends Component {
                         <input placeholder='utah' name='domain' onChange={this.handleInputChange}/>
                         </Form.Field>
                         <Form.Field required>
-                        <label>Path To Hard Drive</label>
-                        <input placeholder='/users/awalz/desktop/hard-drive' name='path' onChange={this.handleInputChange}/>
+                        <label>Path To Hard Drive From Desktop</label>
+                        <input placeholder='/hard-drive' name='path' onChange={this.handleInputChange}/>
                         </Form.Field>
                         <Form.Select required fluid label='Import Type' options={options} placeholder='Import Type' name='importType'  onChange={this.handleDropChange}/>
                         <Form.Select required fluid label='Create Course Shells' options={shellOptions} placeholder='Create Course Shells' name='courseShells'  onChange={this.handleShellsChange}/>

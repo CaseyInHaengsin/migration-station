@@ -1,4 +1,5 @@
 const Migrationsdb  = require('../models/Migrations');
+const db            = require('../models/Courses')
 var throttledQueue  = require('throttled-queue');
 const axios         = require("axios");
 const request       = require('request');
@@ -7,125 +8,133 @@ var token           = require('../../env')
 token               = token.token
 
 
+
 var throttle = throttledQueue(3, 1500, true);
 
 module.exports = {
 
-    findById: function (req, res) {
-        Migrationsdb
-            .findById(req.params.id)
-            .populate('Course')
-            .then(function (dbModel) {
 
-                var domain          = dbModel.domain
-                var importType      = dbModel.importType
-                var createShells    = dbModel.createShells
-                var path            = dbModel.path
+    findAll: function(req, res){
 
-                console.log(importType)
+    db
+        .find({migration: req.params.id})
+        .then(function (dbModel) {
 
-                dbModel.courses.map(course=>{
+            var domain;
+            var path; 
+            var courseShells;
+            var importType;
+            var complete;
+
+            axios.get('http://localhost:3000/api/projects/'+req.params.id).then(function(response){
+
+                domain          = response.data.domain
+                path            = response.data.path
+                courseShells    = response.data.courseShells
+                importType      = response.data.importType
+                complete        = response.data.complete
+
+
+            }).then(function(response){
+
+                dbModel.forEach(course=>{
+
                     throttle(function() {
-                        axios.get("http://localhost:3000/api/courses/"+course)
-                        .then(function (response) {
 
-                            var CourseId    = response.data._id
-                            var projectId   = response.data.migration
-                            var source      = response.data.source
-                            var status      = response.data.status
-                            var sis_id      = response.data.sis_id
+                        if(course.status !== "Queued" && course.status !== 'Complete' && course.status !== 'Importing'){
 
-                            if(status !== "Queued"){
-                                if(status !== 'Complete'){
-                                    if(status !== 'Importing'){
-                                        if (!createShells){
+                            if (!course.createShells){
 
-                                            var postOptions = {
-                                                method: "POST",
-                                                url: `https://${domain}.instructure.com/api/v1/courses/sis_course_id:${sis_id}/content_migrations`,
-                                                headers: { "User-Agent": "Request-Promise", Authorization: "Bearer " + token, "Content-Type": "application/json" },
-                                                data:{
-                                                    migration_type: importType,
-                                                    pre_attachment: {
-                                                        "name": source
-                                                    }
-                                                }
-                                            };
+                                var postOptions = {
+                                    method: "POST",
+                                    url: `https://${domain}.instructure.com/api/v1/courses/sis_course_id:${course.sis_id}/content_migrations`,
+                                    headers: { "User-Agent": "Request-Promise", Authorization: "Bearer " + token, "Content-Type": "application/json" },
+                                    data:{
+                                        "migration_type": importType,
+                                        "pre_attachment": {
+                                            "name": course.source,
+                                        }
+                                    }
+                                };
 
-                                            axios(postOptions).then(function(response){
+                                axios(postOptions).then(function(response){
 
-                                                var params      = response.data.pre_attachment.upload_params
-                                                Object.assign(params, {file: fs.createReadStream('../'+path+"/"+source),});
+                                    var params      = response.data.pre_attachment.upload_params
+                                    var import_id   = response.data.audit_info.id
 
-                                                request.post({url: response.data.pre_attachment.upload_url, formData: params}, function optionalCallback(err, httpResponse, body) {
+                                    Object.assign(params, {file: fs.createReadStream('..'+path+"/"+course.source)});
 
-                                                    if (err) {
+                                    request.post({headers: {"Content-Type": "multipart/form-data"}, url: response.data.pre_attachment.upload_url, formData: params}, function optionalCallback(err, response, body) {
 
-                                                        var errMessage = 'No file or directory was found.  Check your Path to the source files.'
-                                                        updateError(CourseId, errMessage)
+                                        if (err) {
 
-                                                    }else{
-
-                                                        var successRedirect = httpResponse.request.response.headers.location
-
-                                                        var redirectPost = {
-                                                            method: "POST",
-                                                            url: successRedirect,
-                                                            headers: { "User-Agent": "Request-Promise", Authorization: "Bearer " + token, "Content-Type": "application/json" },
-                                                            data:{}
-                                                        };
-                    
-                                                        axios(redirectPost).then(function(response){
-
-                                                            var data;
-
-                                                            if(response.status === 200){
-                                                                data ={ status: "Importing", import_id: response.data.id, errMessage: '' }
-                                                            }else if( response.status === 404){
-                                                                data ={ status: "Failed", errMessage: "No Course Found Using sis_id Provided" }
-                                                            }else{
-                                                                data ={ status: "Failed", errMessage: "Please Visit Course" }
-                                                            }
-
-                                                            updateSuccess(CourseId, data)
-
-                                                        })
-                                                    }
-
-                                                });
-                                                    
-
-                                            }).catch(function(err){
-                                                var errMessage = err.response.data.message
-                                                updateError(CourseId, errMessage)
-                                                console.log(err.response.status)
-                                                console.log(err.response.data.message)
-                                            })
+                                            var errMessage = 'No file or directory was found.  Check your Path to the source files.'
+                                            updateError(course._id, errMessage)
 
                                         }else{
-                                    }
 
-                                        //// TODO:  Add code here to handle creating the course shell first, then importing the content.  /////
+                                            var statusCode = response.headers.status
+                                            var successRedirect = response.headers.location
 
-                                    }
-                                }
+                                            if(statusCode === '201 Created'){
+
+                                                var data = {
+                                                    status: "Importing",
+                                                    import_id: import_id
+                                                }
+
+                                                updateSuccess(course._id, data)
+
+                                            }else{
+
+                                                var redirectPost = {
+                                                    method: "POST",
+                                                    url: successRedirect,
+                                                    headers: { "User-Agent": "Request-Promise", Authorization: "Bearer " + token, "Content-Type": "application/json" },
+                                                };
+
+                                                axios(redirectPost).then(function(response){
+
+                                                    console.log("SUCCESS")
+                                                    var data = {}
+
+                                                    if(response.status === 200){
+                                                        data ={ status: "Importing", import_id: import_id, errMessage: '' }
+                                                    }else if( response.status === 404){
+                                                        data ={ status: "Failed", errMessage: "No Course Found Using sis_id Provided" }
+                                                    }else{
+                                                        data ={ status: "Failed", errMessage: "Please Visit Course" }
+                                                    }
+
+                                                    updateSuccess(course._id, data)
+
+                                                }).catch(function(err){
+                                                    console.log("ERROR ON REDIRECTPOST AFTER FILE HAS BEEN UPLOADED TO CANVAS AWS\n\n\n")
+                                                    console.log(err.response.status, err.response.statusText)
+                                                    console.log('\n\n\n')
+                                                })
+
+                                            }
+                                        }
+
+                                    })
+                                        
+                                }).catch(function(err){
+                                    console.log("ERROR MAKING PREATTACHMENT POST TO CANVAS\n\n\n")
+                                    console.log(err)
+                                    console.log("\n\n\n")
+                                })
+
                             }
+                        }
 
+                    })
 
-                        })
-                        .catch( function (error) { console.log(error) })
-                    });
-                  })
+                })
+
             })
-            .then(dbModel => res.json(dbModel))
-            .catch(function (err) {
-                res.json(err);
-            });
 
-
-
-
-        /////////////////////// HELPER FUNCTIONS ////////////////////////
+        })
 
         updateError =(CourseId, errMessage)=>{
             var courseUpdate = {
@@ -141,6 +150,8 @@ module.exports = {
 
                 console.log("Updated Course ERROR report")
 
+            }).catch(function(err){
+                console.log("PROBLEM WITH UPDATEERROR FUNCTION")
             })
 
         }
@@ -158,11 +169,27 @@ module.exports = {
                 console.log(response.status)
 
             }).catch(function(err){
-                console.log(err)
+                console.log("PROBLEM WITH UPDATESUCCESS FUNCTION")
             })
         }
 
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 };

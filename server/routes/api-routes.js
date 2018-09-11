@@ -115,7 +115,7 @@ const axios                         = require('axios')
     //////////  RUN MIGRATION API ROUTES ///////////////
     router.route('/start-migration/:id')
     .post(function (req, res) {
-        runMigrationsController.findById(req, res);
+        runMigrationsController.findAll(req, res);
     })
     .get(function (req, res) {
         runMigrationsController.findById(req, res);
@@ -133,8 +133,15 @@ const axios                         = require('axios')
     //////////  RUN MIGRATION API ROUTES ///////////////
     router.route('/check-migration/:id')
         .get(function (req, res) {
-            checkMigrationsController.findById(req, res);
+            checkMigrationsController.findAll(req, res);
         })
+
+        router.route('/kill-migration/:id')
+        .post(function (req, res) {
+            runMigrationsController.killScript(req, res);
+        })
+
+  
     ////////////////////////////////////////////
 
 

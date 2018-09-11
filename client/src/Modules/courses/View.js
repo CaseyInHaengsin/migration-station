@@ -18,7 +18,8 @@ class CoursesView extends Component {
             importing: true,
             queued: true,
             complete: true,
-            failed: true
+            failed: true,
+            courseCheckDisabled: false
         };
     }
 
@@ -35,6 +36,17 @@ class CoursesView extends Component {
         axios.get('/api/projects/'+projectId).then(function(response){
             var domain = response.data.domain
             currentComponent.setState({domain: domain})
+        })
+
+    }
+
+    courseCheck=(getData)=>{
+
+        var projectId = this.props.match.params.id
+        this.setState({courseCheckDisabled: true});
+
+        axios.get('/api/check-migration/'+projectId).then(function(response){
+            console.log('checking courses')
         })
 
     }
@@ -194,12 +206,21 @@ class CoursesView extends Component {
                 <div style={{padding: "40px"}}>
 
                 <div>
-                    <Button animated href={'/projects/'+this.props.match.params.id} color='yellow'>
-                        <Button.Content visible>Back to Project</Button.Content>
-                        <Button.Content hidden>
-                            <Icon name='arrow left'/>
-                        </Button.Content>
-                    </Button>
+                    <Button.Group>
+                        <Button animated href={'/projects/'+this.props.match.params.id} color='yellow'>
+                            <Button.Content visible>Back to Project</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='arrow left'/>
+                            </Button.Content>
+                        </Button>
+                        <Button.Or />
+                        <Button animated onClick={this.courseCheck} disabled={this.state.courseCheckDisabled} color='yellow'>
+                            <Button.Content visible>Check Course Status'</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='question' />
+                            </Button.Content>
+                        </Button>
+                    </Button.Group>
                 </div>
 
                     <Header as='h2' style={{marginTop: "130px"}}>
