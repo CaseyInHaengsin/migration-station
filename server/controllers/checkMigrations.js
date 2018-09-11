@@ -5,8 +5,13 @@ const axios         = require("axios");
 var token           = require('../../env')
 token               = token.token
 
-//// Allowing 10 requests every second//
-var throttle = throttledQueue(10, 1000);
+var throttle        = throttledQueue(50, 1000);
+var throttle2        = throttledQueue(50, 1000);
+
+var counter         = 0
+var counterLength;
+
+var clearCount      = 0
 
 module.exports = {
 
@@ -15,6 +20,7 @@ module.exports = {
             .find({migration: req.params.id})
             .then(function (dbModel) {
 
+                
                 var domain;
 
                 axios.get('http://localhost:3000/api/projects/'+req.params.id).then(function(response){
@@ -24,7 +30,16 @@ module.exports = {
 
                     console.log("Checking Courses")
 
+                    counterLength = dbModel.length
+
                     dbModel.forEach(course=>{
+                        
+                        throttle(function() {
+
+                                var clearData={
+                                    status: "Not Imported",
+                                    errMessage: ""
+                                }
 
                                 var courseId    = course._id
                                 var projectId   = course.migration
@@ -60,9 +75,23 @@ module.exports = {
                                                     data={ status: "Failed", errMessage: 'Course Failed During Import'}
                                                 }else if(newStatus ==='pre_processing'){
                                                     data={ status: "Queued", errMessage: 'Course is stuck in Pre-Processing'}
+                                                }else{
+                                                    data={ status: "Failed", errMessage: 'Unsure of Course Status.  Please Manually Check.'}
                                                 }
 
                                                 updateSuccess(courseId, data)
+                                                
+
+                                            } else {
+
+                                                // Indicates that there was not an import that was ran
+
+                                                var data ={
+                                                    status: "Not Imported",
+                                                    errMessage: ""
+                                                }
+
+                                                clearError(courseId, data)
 
                                             }
 
@@ -70,20 +99,38 @@ module.exports = {
 
                                     }).catch(function(err){
 
-                                        console.log(err)
-                                        var errMessage = "No Course Found with the sis_id of" + sis_id
+                                        if(err.response !== undefined){
+
+                                            if(err.response.status = 401){
+                                                var errMessage = "Invalid Authentication Token Provided.  Unauthorized."
+                                            }if(err.response.status = 404){
+                                                var errMessage = "Course Not Found.  No sis_id found for " + sis_id
+                                            }
+
+                                        }else{
+                                            var errMessage = "Course Not Found.  No sis_id found for " + sis_id
+                                        }
+                                        
                                         updateError(courseId, errMessage)
+                                    
 
                                     })
                                 }
 
+                        })
+
+                        
+
                     })
 
-            })
+                }).catch(function(err){
+
+                    console.log(err)
+
+                })
                   
-            }).then(function(response){
-                
             })
+
             .catch(function (err) {
                 console.log(err)
             });
@@ -92,6 +139,14 @@ module.exports = {
 
 
         /////////////////////// HELPER FUNCTIONS ////////////////////////
+
+        responseCheck=()=>{
+            if(counter === counterLength){
+                console.log("FINISHED")
+                res.json({finished: true})
+            }
+        }
+
 
         updateError =(CourseId, errMessage)=>{
             var courseUpdate = {
@@ -106,7 +161,15 @@ module.exports = {
             axios(courseUpdate).then(function(response){
 
                 console.log("Updated Course ERROR report for", CourseId)
+                counter ++
+                console.log(counter,  "/" , counterLength)
 
+            }).then(function(response){
+
+                responseCheck()
+
+            }).catch(function(err){
+                console.log(err)
             })
 
         }
@@ -122,6 +185,12 @@ module.exports = {
             axios(courseUpdate).then(function(response){
 
                 console.log("Updated Course SUCCESS report for", courseId)
+                counter ++
+                console.log(counter,  "/" , counterLength)
+
+            }).then(function(response){
+
+                responseCheck()
 
             }).catch(function(err){
                 console.log("Error Updating Success Message")
@@ -129,136 +198,92 @@ module.exports = {
         }
 
 
+        clearError=(courseId, data)=>{
+
+            var courseUpdate = {
+                method: "PUT",
+                url: 'http://localhost:3000/api/courses/'+courseId,
+                data: data
+            };
+
+            axios(courseUpdate).then(function(response){
+
+                console.log("Updated Course Clear Error report for", courseId)
+                counter++
+
+            }).then(function(response){
+
+                responseCheck()
+
+            }).catch(function(err){
+                console.log("Error Updating CLEAR ERROR Message")
+            })
+
+        }
+
+
+    },
+
+
+
+
+    clearAll: function (req, res) {
+        CoursesDb
+            .find({migration: req.params.id})
+            .then(function (dbModel) {
+
+                counterLength = dbModel.length
+
+                dbModel.forEach(course=>{
+
+                    throttle2(function() {
+
+                        if(course.status === "Failed"){
+                            clearError(course._id)
+                        }else{
+                            dontClear()
+                        }
+
+                    })
+
+                })
+
+
+            })
+
+            clearError=(courseId)=>{
+
+                var courseUpdate = {
+                    method: "PUT",
+                    url: 'http://localhost:3000/api/courses/'+courseId,
+                    data: {status: "Not Imported", errMessage: ""}
+                };
+    
+                axios(courseUpdate).then(function(response){
+                    clearCount++
+                }).then(function(){
+                    clearCountCheck()
+                }).catch(function(err){
+                    console.log("\n\nUnable To Clear Errors\n\n")
+                })
+    
+            }
+
+            dontClear=()=>{
+                clearCount++
+                clearCountCheck()
+            }
+
+            clearCountCheck=()=>{
+                if (clearCount === counterLength){
+                    res.json({finished: true})
+                }
+            }
+
+
+
     }
 
-
-
-    // findById: function (req, res) {
-    //     Migrationsdb
-    //         .findById(req.params.id)
-    //         .populate('Course')
-    //         .then(function (dbModel) {
-
-    //             var domain          = dbModel.domain
-
-    //             dbModel.courses.map(course=>{
-    //                 throttle(function() {
-    //                     axios.get("http://localhost:3000/api/courses/"+course)
-    //                     .then(function (response) {
-
-    //                         var CourseId    = response.data._id
-    //                         var projectId   = response.data.migration
-    //                         var source      = response.data.source
-    //                         var status      = response.data.status
-    //                         var sis_id      = response.data.sis_id
-    //                         var import_id   = response.data.import_id
-
-    //                         if(status !== 'Complete'){
-
-    //                             var getOptions = {
-    //                                 method: "get",
-    //                                 url: `https://${domain}.instructure.com/api/v1/courses/sis_course_id:${sis_id}/content_migrations`,
-    //                                 headers: { "User-Agent": "Request-Promise", Authorization: "Bearer " + token, "Content-Type": "application/json" },
-    //                                 data:{}
-    //                             };
-
-                                
-
-    //                             axios(getOptions).then(function(response){
-                                    
-    //                                 response.data.map(migration=>{
-    //                                     if(migration.attachment.id === import_id){
-
-    //                                         var newStatus = migration.workflow_state
-
-    //                                         if(newStatus === 'completed'){
-    //                                             data={ status: "Complete", errMessage: ''}
-    //                                         }else if(newStatus ==='queued'){
-    //                                             data={ status: "Queued", errMessage: ''}
-    //                                         }else if(newStatus ==='failed'){
-    //                                             data={ status: "Failed", errMessage: 'Course Failed During Import'}
-    //                                         }
-
-
-    //                                         var courseUpdate = {
-    //                                             method: "PUT",
-    //                                             url: 'http://localhost:3000/api/courses/'+CourseId,
-    //                                             data: data
-    //                                         };
-                                
-    //                                         axios(courseUpdate).then(function(response){
-
-    //                                             console.log("Successfully Checking Course:", response.status)
-
-    //                                         }).error(function(err){
-    //                                             console.log(err)
-    //                                         })
-
-    //                                     }
-
-    //                                 })
-
-    //                             }).catch(function(err){
-
-    //                             })
-    //                         }
-
-    //                     })
-    //                     .catch( function (error) { console.log(error) })
-                        
-    //                 });
-    //               })
-                  
-    //         }).then(function(response){
-                
-    //         })
-    //         .catch(function (err) {
-    //             console.log(err)
-    //         });
-
-
-
-
-    //     /////////////////////// HELPER FUNCTIONS ////////////////////////
-
-    //     updateError =(CourseId, errMessage)=>{
-    //         var courseUpdate = {
-    //             method: "PUT",
-    //             url: 'http://localhost:3000/api/courses/'+CourseId,
-    //             data: {
-    //                 status: "Failed",
-    //                 errMessage: errMessage
-    //             }
-    //         };
-
-    //         axios(courseUpdate).then(function(response){
-
-    //             console.log("Updated Course ERROR report")
-
-    //         })
-
-    //     }
-
-    //     updateSuccess=(courseId, data)=>{
-
-    //         console.log("Updating Success")
-
-    //         var courseUpdate = {
-    //             method: "PUT",
-    //             url: 'http://localhost:3000/api/courses/'+courseId,
-    //             data: data
-    //         };
-
-    //         axios(courseUpdate).then(function(response){
-
-    //             console.log(response.status)
-
-    //         }).error(function(err){
-    //             console.log(err)
-    //         })
-    //     }
-
-
-    // }
+    
 
 };

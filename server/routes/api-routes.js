@@ -136,6 +136,11 @@ const axios                         = require('axios')
             checkMigrationsController.findAll(req, res);
         })
 
+        router.route('/clear-errors/:id')
+        .post(function (req, res) {
+            checkMigrationsController.clearAll(req, res);
+        })
+
         router.route('/kill-migration/:id')
         .post(function (req, res) {
             runMigrationsController.killScript(req, res);

@@ -109,9 +109,8 @@ module.exports = {
                                                     updateSuccess(course._id, data)
 
                                                 }).catch(function(err){
-                                                    console.log("ERROR ON REDIRECTPOST AFTER FILE HAS BEEN UPLOADED TO CANVAS AWS\n\n\n")
-                                                    console.log(err.response.status, err.response.statusText)
-                                                    console.log('\n\n\n')
+                                                    var errMessage = err.response.status + err.response.statusText
+                                                    updateError(course._id, errMessage)
                                                 })
 
                                             }
@@ -121,8 +120,18 @@ module.exports = {
                                         
                                 }).catch(function(err){
                                     console.log("ERROR MAKING PREATTACHMENT POST TO CANVAS\n\n\n")
-                                    console.log(err)
+                                    console.log(err.response.status)
                                     console.log("\n\n\n")
+
+                                    if(err.response !== undefined){
+
+                                        if(err.response.status === 404){
+
+                                            updateError(course._id, "Course Not Found.  No sis_id found for", course.sis_id)
+
+                                        }
+                                    }
+
                                 })
 
                             }

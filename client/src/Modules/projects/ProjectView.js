@@ -64,6 +64,9 @@ class ProjectView extends Component {
 
         axios.get('/api/check-migration/'+projectId).then(function(response){
             console.log('checking courses')
+            if(response.data.finished){
+                window.location = "/courses/"+projectId;
+            }
         })
 
         this.getData()

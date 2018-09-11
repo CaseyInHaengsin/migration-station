@@ -43,10 +43,12 @@ class CoursesView extends Component {
     courseCheck=(getData)=>{
 
         var projectId = this.props.match.params.id
-        this.setState({courseCheckDisabled: true});
+        this.setState({courseCheckDisabled: true, updating: true});
 
         axios.get('/api/check-migration/'+projectId).then(function(response){
-            console.log('checking courses')
+            if(response.data.finished){
+                window.location.reload()
+            }
         })
 
     }
@@ -97,7 +99,7 @@ class CoursesView extends Component {
             <div>
 
                 <div style={{textAlign: "right", marginRight: "30px"}}>
-                    <Checkbox toggle defaultChecked label='Not Started' style={{paddingRight: "10px"}} name='notImported' onClick={this.handleInputChangeNotImported}/>
+                    <Checkbox toggle defaultChecked label='Not Imported' style={{paddingRight: "10px"}} name='notImported' onClick={this.handleInputChangeNotImported}/>
                     <Checkbox toggle defaultChecked label='Importing' style={{paddingRight: "10px"}} name='importing' onClick={this.handleInputChangeImporting}/>
                     <Checkbox toggle defaultChecked label='Queued' style={{paddingRight: "10px"}} name='queued' onClick={this.handleInputChangeQueued}/>
                     <Checkbox toggle defaultChecked label='Failed' style={{paddingRight: "10px"}} name='failed' onClick={this.handleInputChangeFailed}/>
@@ -180,13 +182,26 @@ class CoursesView extends Component {
         )
     }
 
+    clearErrors=()=>{
+
+        var projectId = this.props.match.params.id
+        this.setState({errorClearDisabled: true, updating: true});
+
+        axios.post('/api/clear-errors/'+projectId).then(function(response){
+            if(response.data.finished){
+                window.location.reload()
+            }
+        })
+
+    }
+
 
     
     returnLoader=()=>{
         return(
             <Segment style={{height: '100vh', marginTop: "-.5vh"}}>
                 <Dimmer active>
-                <Loader size='massive'>Loading</Loader>
+                <Loader size='massive'>Updating Course Information</Loader>
                 </Dimmer>
           </Segment>
         )
@@ -216,6 +231,13 @@ class CoursesView extends Component {
                         <Button.Or />
                         <Button animated onClick={this.courseCheck} disabled={this.state.courseCheckDisabled} color='yellow'>
                             <Button.Content visible>Check Course Status'</Button.Content>
+                            <Button.Content hidden>
+                                <Icon name='question' />
+                            </Button.Content>
+                        </Button>
+                        <Button.Or />
+                        <Button animated onClick={this.clearErrors} disabled={this.state.errorClearDisabled} color='yellow'>
+                            <Button.Content visible>Clear Failed Errors</Button.Content>
                             <Button.Content hidden>
                                 <Icon name='question' />
                             </Button.Content>
