@@ -1,5 +1,5 @@
 import React, { Component} from 'react'
-import { Table, Container, Button, Icon, Header, Form, Message, Divider, Progress, Grid, Checkbox, Statistic } from 'semantic-ui-react'
+import { Container, Button, Icon, Header, Form, Message, Divider, Progress, Grid, List, Statistic } from 'semantic-ui-react'
 import axios from 'axios'
 import './styles.css'
 import Navbar from '../global/navbar/View'
@@ -263,7 +263,52 @@ class ProjectView extends Component {
                     <Header as='h1' icon style={{marginBottom: "40px"}}>
                         <Icon name='address book outline' />
                         {this.state.project.name}
-                        <Progress indicating style ={{width: "50%", marginLeft: "auto", marginRight: "auto"}} color='yellow' percent={((this.state.complete + this.state.failed)/this.state.count.toFixed(0))*100} progress />
+
+                        <Progress indicating style ={{width: "50%", marginLeft: "auto", marginRight: "auto"}} color='yellow' percent={(((this.state.complete + this.state.failed)/this.state.count).toFixed(2))*100} progress />
+                        
+                        <List horizontal divided style={{marginBottom: "50px"}}>
+                        <List.Item>
+                            <List.Icon name='cloud upload' size='small' verticalAlign='middle' />
+                            <List.Content>
+                                <List.Header>Not Imported</List.Header>
+                                <List.Description>{this.state.notImported}</List.Description>
+                            </List.Content>
+                        </List.Item>
+                            
+                        <List.Item>
+                            <List.Icon name='spinner' size='small' verticalAlign='middle' loading style={{color: "blue"}}/>
+                            <List.Content>
+                                <List.Header>Importing</List.Header>
+                                <List.Description>{this.state.importing}</List.Description>
+                            </List.Content>
+                        </List.Item>
+
+                        <List.Item>
+                            <List.Icon name='pause' size='small' verticalAlign='middle' style={{color: "#FF9245"}}/>
+                            <List.Content>
+                                <List.Header>Queued</List.Header>
+                                <List.Description>{this.state.queued}</List.Description>
+                            </List.Content>
+                        </List.Item>
+
+                         <List.Item>
+                            <List.Icon name='close' size='small' verticalAlign='middle' style={{color: "red"}}/>
+                            <List.Content>
+                                <List.Header>Failed</List.Header>
+                                <List.Description>{this.state.failed}</List.Description>
+                            </List.Content>
+                        </List.Item>
+
+                        <List.Item>
+                            <List.Icon name='check' size='small' verticalAlign='middle' style={{color: "green"}}/>
+                            <List.Content>
+                                <List.Header>Complete</List.Header>
+                                <List.Description>{this.state.complete}</List.Description>
+                            </List.Content>
+                        </List.Item>
+
+                        </List>
+                        
                         <Divider horizontal>Project Details</Divider>
                         <Header.Subheader><a href={url} target='_blank'>{this.state.project.name}'s Account Settings Page</a></Header.Subheader>
                         <Header.Subheader>{this.state.count} courses added to Project.</Header.Subheader>

@@ -9,7 +9,7 @@ token               = token.token
 
 
 
-var throttle = throttledQueue(3, 1500, true);
+var throttle = throttledQueue(3, 2000, true);
 
 module.exports = {
 
@@ -119,16 +119,10 @@ module.exports = {
                                     })
                                         
                                 }).catch(function(err){
-                                    console.log("ERROR MAKING PREATTACHMENT POST TO CANVAS\n\n\n")
-                                    console.log(err.response.status)
-                                    console.log("\n\n\n")
-
                                     if(err.response !== undefined){
-
                                         if(err.response.status === 404){
-
                                             updateError(course._id, "Course Not Found.  No sis_id found for", course.sis_id)
-
+                                            console.log("Error.  No Course found for", course.sis_id)
                                         }
                                     }
 

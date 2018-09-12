@@ -8,17 +8,20 @@ token               = token.token
 var throttle        = throttledQueue(50, 1000);
 var throttle2        = throttledQueue(50, 1000);
 
-var counter         = 0
-var counterLength;
 
-var clearCount      = 0
 
 module.exports = {
 
     findAll: function (req, res) {
+
+        var counter         = 0
+        var counterLength;
+
         CoursesDb
             .find({migration: req.params.id})
             .then(function (dbModel) {
+
+                
 
                 
                 var domain;
@@ -118,8 +121,6 @@ module.exports = {
                                 }
 
                         })
-
-                        
 
                     })
 
@@ -228,6 +229,9 @@ module.exports = {
 
 
     clearAll: function (req, res) {
+
+        var clearCount      = 0
+        
         CoursesDb
             .find({migration: req.params.id})
             .then(function (dbModel) {
