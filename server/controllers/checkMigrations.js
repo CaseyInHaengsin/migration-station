@@ -44,12 +44,14 @@ module.exports = {
                                     errMessage: ""
                                 }
 
+                                console.log(course)
+
                                 var courseId    = course._id
                                 var projectId   = course.migration
                                 var source      = course.source
                                 var status      = course.status
                                 var sis_id      = course.sis_id
-                                var import_id   = course.import_id
+                                var import_id   = parseInt(course.import_id)
                                 
                                 if(status !== 'Complete'){
 
@@ -60,14 +62,16 @@ module.exports = {
                                         data:{}
                                     };
 
-                                    
 
                                     axios(getOptions).then(function(response){
 
+                                        var found = false
+
                                         response.data.map(migration=>{
 
-                                            if(migration['id'] === import_id){
+                                            if(migration.id === import_id){
 
+                                                found = true
                                                 var newStatus = migration.workflow_state
 
                                                 if(newStatus === 'completed'){
@@ -85,20 +89,23 @@ module.exports = {
                                                 updateSuccess(courseId, data)
                                                 
 
-                                            } else {
-
-                                                // Indicates that there was not an import that was ran
-
-                                                var data ={
-                                                    status: "Not Imported",
-                                                    errMessage: ""
-                                                }
-
-                                                clearError(courseId, data)
-
                                             }
 
                                         })
+
+                                        if(!found) {
+
+                                            // Indicates that there was not an import that was ran
+
+                                            var data ={
+                                                status: "Not Imported",
+                                                errMessage: ""
+                                            }
+
+                                            clearError(courseId, data)
+
+                                        }
+
 
                                     }).catch(function(err){
 

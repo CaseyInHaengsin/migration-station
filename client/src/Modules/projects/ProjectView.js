@@ -193,14 +193,18 @@ class ProjectView extends Component {
                 ...prevState.project,
                 importType: value,
             },
-        }));
+        }),function(){
+            console.log(this.state.project)
+        });
 
         const handleShellsChange = (e, { value }) =>  this.setState((prevState, props) => ({
             project: {
                 ...prevState.project,
-                importType: value,
+                courseShells: value,
             },
-        }));
+        }), function(){
+            console.log(this.state.project)
+        });
 
         const options = [
             { key: 'blackboard', text: 'Blackboard', value: 'blackboard_exporter' },
@@ -224,17 +228,17 @@ class ProjectView extends Component {
                         <Form style={{marginTop: "75px"}}>
                             <Form.Field>
                             <label>Project Name</label>
-                            <input placeholder='University of Utah' name='name' onChange={handleInputChange}/>
+                            <input placeholder={this.state.project.name} name='name' onChange={handleInputChange}/>
                             </Form.Field>
                             <Form.Field>
                             <label>Instructure Domain</label>
-                            <input placeholder='utah' name='domain' onChange={handleInputChange}/>
+                            <input placeholder={this.state.project.domain} name='domain' onChange={handleInputChange}/>
                             </Form.Field>
                             <Form.Field>
                             <label>Path To Hard Drive From Desktop</label>
-                            <input placeholder='/course-imports-directory' name='path' onChange={handleInputChange}/>
+                            <input placeholder={this.state.project.path} name='path' onChange={handleInputChange}/>
                             </Form.Field>
-                            <Form.Select fluid label='Import Type' options={options} placeholder='Import Type' name='importType'  onChange={handleDropChange}/>
+                            <Form.Select fluid label='Import Type' options={options} placeholder={this.state.project.importType.toUpperCase().split('_').join(' ')} name='importType'  onChange={handleDropChange}/>
                             <Form.Select fluid label='Create Course Shells' options={shellOptions} placeholder='Create Course Shells' name='courseShells'  onChange={handleShellsChange}/>
 
                             <Button animated style={{marginTop: "30px"}} onClick={this.updateMigrationsDB}>
