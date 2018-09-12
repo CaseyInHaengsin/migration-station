@@ -274,39 +274,39 @@ class ProjectView extends Component {
                         <List.Item>
                             <List.Icon name='cloud upload' size='small' verticalAlign='middle' />
                             <List.Content>
-                                <List.Header>Not Imported</List.Header>
+                                <List.Header style={{paddingRight: "25px"}}>Not Imported</List.Header>
                                 <List.Description>{this.state.notImported}</List.Description>
                             </List.Content>
                         </List.Item>
                             
                         <List.Item>
-                            <List.Icon name='spinner' size='small' verticalAlign='middle' loading style={{color: "blue"}}/>
+                            <List.Icon name='spinner' size='small' verticalAlign='middle' loading style={{paddingLeft: "25px", paddingRight: "15px", color: "blue"}}/>
                             <List.Content>
-                                <List.Header>Importing</List.Header>
+                                <List.Header style={{paddingRight: "25px"}}>Importing</List.Header>
                                 <List.Description>{this.state.importing}</List.Description>
                             </List.Content>
                         </List.Item>
 
                         <List.Item>
-                            <List.Icon name='pause' size='small' verticalAlign='middle' style={{color: "#FF9245"}}/>
+                            <List.Icon name='pause' size='small' verticalAlign='middle' style={{paddingLeft: "25px", paddingRight: "15px", color: "#FF9245"}}/>
                             <List.Content>
-                                <List.Header>Queued</List.Header>
+                                <List.Header style={{paddingRight: "25px"}}>Queued</List.Header>
                                 <List.Description>{this.state.queued}</List.Description>
                             </List.Content>
                         </List.Item>
 
                          <List.Item>
-                            <List.Icon name='close' size='small' verticalAlign='middle' style={{color: "red"}}/>
+                            <List.Icon name='close' size='small' verticalAlign='middle' style={{paddingLeft: "25px", paddingRight: "15px", color: "red"}}/>
                             <List.Content>
-                                <List.Header>Failed</List.Header>
+                                <List.Header style={{paddingRight: "25px"}}>Failed</List.Header>
                                 <List.Description>{this.state.failed}</List.Description>
                             </List.Content>
                         </List.Item>
 
                         <List.Item>
-                            <List.Icon name='check' size='small' verticalAlign='middle' style={{color: "green"}}/>
+                            <List.Icon name='check' size='small' verticalAlign='middle' style={{paddingLeft: "25px", paddingRight: "15px", color: "green"}}/>
                             <List.Content>
-                                <List.Header>Complete</List.Header>
+                                <List.Header style={{paddingRight: "25px"}}>Complete</List.Header>
                                 <List.Description>{this.state.complete}</List.Description>
                             </List.Content>
                         </List.Item>
