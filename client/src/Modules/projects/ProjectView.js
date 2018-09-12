@@ -266,7 +266,7 @@ class ProjectView extends Component {
 
                         <Progress indicating style ={{width: "50%", marginLeft: "auto", marginRight: "auto"}} color='yellow' percent={(((this.state.complete + this.state.failed)/this.state.count).toFixed(2))*100} progress />
                         
-                        <List horizontal divided style={{marginBottom: "50px"}}>
+                        <List horizontal divided style={{paddingBottom: "80px", paddingTop: "60px"}}>
                         <List.Item>
                             <List.Icon name='cloud upload' size='small' verticalAlign='middle' />
                             <List.Content>
